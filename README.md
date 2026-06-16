@@ -57,23 +57,6 @@ The system supports three user roles:
 * Trainers can submit ratings, comments, and improvement areas.
 * Employees can view performance feedback.
 
-## Current Progress
-
-Completed:
-
-* Login Page
-* Admin Dashboard
-* Trainer Dashboard
-* Employee Dashboard
-* Admin Onboarding Page
-* Employee Onboarding Page
-
-In Progress:
-
-* Training Module Management
-* Assessment & Quiz Module
-* Performance Review Module
-
 ## Technologies Used
 
 Frontend:
