@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Trainer Dashboard</title>
+    <style>
+        body {
+            background-color: rgb(199, 190, 190);
+            font-family:sans-serif;
+        }
+        h1{
+            color: black;
+            text-align: center;
+        }
+        p{
+            color: black;
+            text-align: left;
+        }
+         h2 {
+            color: black;
+            text-align: center;
+        }
+        button {
+            background-color: purple;
+            border: 1px solid #000000;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkmagenta;
+        }
+        .card {
+            background-color: lightblue;
+            border: 1px solid #000000;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px auto;
+            width: 300px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Trainer Dashboard</h1>
+    <p style="font-size: large;"> Welcome Trainer!. Here are all the details: </p>
+    <hr style="border: 1px solid #000000;">
+    <h2> <u>Overview</u> </h2>
+    <div class="card">
+        <h3>Assigned trainees: </h3>
+        <p style="text-align: center;">100</p>
+    </div>
+    <div class="card">
+        <h3>Pending reviews: </h3>
+        <p style="text-align: center;">5</p>
+    </div>
+    <div class="card">
+        <h3>Quiz performance summary: </h3>
+        <p style="text-align: center;">85%</p>
+    </div>
+    <br>
+        <h2 style="text-align: left;"><u>Training module</u></h2>
+        <p>Click below to manage training modules: </p>
+        <button onclick="window.location.href='training-modules-management.html'">Manage Training Modules</button>
+
+        <h2 style="text-align: left;"><u>Assessment and Quiz module</u></h2>
+        <p>Click below to manage Assessment and Quiz modules: </p>
+        <button onclick="window.location.href='assessment&quiz-modules-management.html'">Manage Assessment and Quiz Modules</button>
+
+        <h2 style="text-align: left;"><u>Weekly Performance Review</u></h2>
+        <p>Click below to give weekly performance reviews: </p>
+        <button onclick="window.location.href='weekly-performance-review.html'">Give Weekly Performance Reviews</button>
+    <br>
+    <br>
+</body>
+</html>

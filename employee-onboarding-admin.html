@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Employee Onboarding</title>
+</head>
+<style>
+    body{
+        font-family: sans-serif;
+        background-color: rgb(199, 190, 190);
+    }
+</style>
+<body>
+    <h1>Employee Onboarding</h1>
+    <p>Add a new employee to the system.</p>
+    <hr style="border: 1px solid #000000;">
+    <form>
+        <div>
+            <label for="name">Employee Name:</label>
+            <input type="text" id="name" placeholder="Enter employee name" required>
+            <br>
+            <br>
+            <label for="email">Email:</label> 
+            <input type="email" id="email" placeholder="Enter employee email"required>
+        <br>
+        <br>
+            <label for="department">Department:</label>
+            <select id="department" required>
+                <option value="">Select Department</option>
+                <option value="it">IT</option>
+                <option value="hr">HR</option>
+                <option value="finance">Finance</option>
+                <option value="marketing">Marketing</option>
+            </select>
+            <br>
+            <br>
+            <label for="trainer">Assign Trainer:</label>
+            <select id="trainer">
+                <option value="">Select Trainer</option>
+                <option value="rahul">Rahul Sharma</option>
+                <option value="amit">Amit Kumar</option>
+                <option value="priya">Priya Singh</option>
+            </select>
+        <br>
+        <br>
+            <label for="joining-date">Joining Date:</label>
+            <input type="date" id="joining-date">
+        <br>
+        <br>
+            <label for="duration">Training Duration (Weeks):</label>
+            <input type="number" id="duration" placeholder="Enter duration">
+        <br>
+        <br>
+        <button type="submit">Add Employee</button>
+    </form>
+</body>
+</html>
