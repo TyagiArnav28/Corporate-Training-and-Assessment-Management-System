@@ -48,7 +48,7 @@
     <h2> <u>Overview</u> </h2>
     <div class="card">
         <h3>Total Employees: </h3>
-        <p style="text-align: center;">100</p>
+        <p style="text-align: center;" id="employeeCount">Loading...</p>
     </div>
     <div class="card">
         <h3>Active Training Programs: </h3>
@@ -68,5 +68,12 @@
         <button onclick="window.location.href='employee-onboarding-admin.html'">Add Employee</button>
     <br>
     <br>
+<script>
+    fetch("http://localhost:8080/employees/count")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("employeeCount").innerText = data;
+        });
+</script>
 </body>
 </html>
