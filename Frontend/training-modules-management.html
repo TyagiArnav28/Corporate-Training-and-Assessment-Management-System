@@ -2,10 +2,125 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training Module</title>
+    <title>Training Module Management</title>
+
+    <style>
+
+        body{
+            font-family: sans-serif;
+            background-color: rgb(199, 190, 190);
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1{
+            text-align: center;
+        }
+
+        p{
+            text-align: center;
+        }
+
+        form{
+            background-color: lightblue;
+            width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid black;
+        }
+
+        label{
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select{
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        textarea{
+            resize: vertical;
+        }
+
+        button{
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            background-color: purple;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover{
+            background-color: darkmagenta;
+        }
+
+    </style>
+
 </head>
 <body>
-    
+
+    <h1>Training Module Management</h1>
+
+    <p>Create and manage training programs for employees.</p>
+
+    <hr style="border: 1px solid black;">
+
+    <form id="trainingModuleForm">
+
+        <label for="moduleName">Module Name:</label>
+        <input
+            type="text"
+            id="moduleName"
+            placeholder="Enter module name"
+            required
+        >
+
+        <label for="description">Module Description:</label>
+        <textarea
+            id="description"
+            rows="4"
+            placeholder="Enter module description"
+            required
+        ></textarea>
+
+        <label for="materialLink">Material Link (PDF / Video):</label>
+        <input
+            type="url"
+            id="materialLink"
+            placeholder="Paste PDF or Video link"
+            required
+        >
+
+        <label for="deadline">Deadline:</label>
+        <input
+            type="date"
+            id="deadline"
+            required
+        >
+
+        <label for="quiz">Assign Quiz:</label>
+        <select id="quiz">
+            <option value="">Select Quiz</option>
+            <option value="Java Basics Quiz">Java Basics Quiz</option>
+            <option value="Spring Boot Quiz">Spring Boot Quiz</option>
+            <option value="DBMS Quiz">DBMS Quiz</option>
+        </select>
+
+        <button type="submit">
+            Create Training Module
+        </button>
+
+    </form>
+
 </body>
 </html>

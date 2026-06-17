@@ -5,15 +5,64 @@
 </head>
 <style>
     body{
-        font-family: sans-serif;
-        background-color: rgb(199, 190, 190);
-    }
+    font-family: sans-serif;
+    background-color: rgb(199, 190, 190);
+    margin: 0;
+    padding: 20px;
+}
+
+h1{
+    text-align: center;
+}
+
+p{
+    text-align: center;
+}
+
+form{
+    background-color: lightblue;
+    width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+
+label{
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+input,
+select{
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+button{
+    background-color: purple;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover{
+    background-color: darkmagenta;
+}
+    
 </style>
 <body>
     <h1>Employee Onboarding</h1>
     <p>Add a new employee to the system.</p>
     <hr style="border: 1px solid #000000;">
-    <form>
+    <form id="employeeForm">
         <div>
             <label for="name">Employee Name:</label>
             <input type="text" id="name" placeholder="Enter employee name" required>
@@ -21,8 +70,7 @@
             <br>
             <label for="email">Email:</label> 
             <input type="email" id="email" placeholder="Enter employee email"required>
-        <br>
-        <br>
+
             <label for="department">Department:</label>
             <select id="department" required>
                 <option value="">Select Department</option>
@@ -31,8 +79,7 @@
                 <option value="finance">Finance</option>
                 <option value="marketing">Marketing</option>
             </select>
-            <br>
-            <br>
+
             <label for="trainer">Assign Trainer:</label>
             <select id="trainer">
                 <option value="">Select Trainer</option>
@@ -40,17 +87,59 @@
                 <option value="Amit Kumar">Amit Kumar</option>
                 <option value="Priya Singh">Priya Singh</option>
             </select>
-        <br>
-        <br>
+
             <label for="joining-date">Joining Date:</label>
             <input type="date" id="joining-date">
-        <br>
-        <br>
+
             <label for="duration">Training Duration (Weeks):</label>
             <input type="number" id="duration" placeholder="Enter duration">
-        <br>
-        <br>
+
         <button type="submit">Add Employee</button>
     </form>
+    <script>
+        document.getElementById("employeeForm")
+            .addEventListener("submit", async function (event) {
+
+                event.preventDefault();
+
+                const employee = {
+
+                    name: document.getElementById("name").value,
+
+                    email: document.getElementById("email").value,
+
+                    department: document.getElementById("department").value,
+
+                    trainer: document.getElementById("trainer").value,
+
+                    joiningDate: document.getElementById("joining-date").value,
+
+                    trainingDuration: parseInt(
+                        document.getElementById("duration").value
+                    )
+
+                };
+
+                const response = await fetch(
+                    "http://localhost:8080/employees",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(employee)
+                    }
+                );
+
+                if (response.ok) {
+                    alert("Employee Added Successfully!");
+                    document.getElementById("employeeForm").reset();
+                }
+                else {
+                    alert("Failed to add employee.");
+                }
+
+            });
+    </script>
 </body>
 </html>
