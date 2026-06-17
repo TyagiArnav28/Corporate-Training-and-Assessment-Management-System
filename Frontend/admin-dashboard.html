@@ -52,15 +52,15 @@
     </div>
     <div class="card">
         <h3>Active Training Programs: </h3>
-        <p style="text-align: center;">5</p>
+        <p style="text-align: center;" id="trainingCount">Loading...</p>
     </div>
     <div class="card">
         <h3>Completion Rate: </h3>
-        <p style="text-align: center;">85%</p>
+        <p style="text-align: center;" id="completionRate">Loading...</p>
     </div>
     <div class="card">
         <h3>Underperforming Employees: </h3>
-        <p style="text-align: center;">10</p>
+        <p style="text-align: center;" id="underperformingCount">Loading...</p>
     </div>
     <br>
         <h2 style="text-align: left;"><u>Employee Onboarding</u></h2>
@@ -73,6 +73,21 @@
         .then(response => response.text())
         .then(data => {
             document.getElementById("employeeCount").innerText = data;
+        });
+    fetch("http://localhost:8080/trainings/count")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("trainingCount").innerText = data;
+        });
+    fetch("http://localhost:8080/completion-rate")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("completionRate").innerText = data + "%";
+        });
+    fetch("http://localhost:8080/underperforming/count")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("underperformingCount").innerText = data;
         });
 </script>
 </body>
