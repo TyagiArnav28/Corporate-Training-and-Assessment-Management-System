@@ -1,11 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training Module</title>
+    <title>Employee Training Module</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: rgb(199, 190, 190);
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        .module-card {
+            background-color: lightblue;
+            width: 700px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid black;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            border: none;
+            background-color: purple;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkmagenta;
+        }
+    </style>
+
 </head>
+
 <body>
+
+    <h1>Employee Training Module</h1>
+
+    <p>View assigned modules, complete training and submit assignments.</p>
+
+    <hr style="border:1px solid black;">
+
+    <div id="modulesContainer">
+
+    </div>
+
+    <script>
+
+
+        fetch("http://localhost:8080/training-modules")
+            .then(response => response.json())
+            .then(modules => {
+
+                const container =
+                    document.getElementById("modulesContainer");
+
+                modules.forEach(module => {
+
+                    container.innerHTML += `
     
+                <div class="module-card">
+    
+                    <h2>${module.moduleName}</h2>
+    
+                    <p>
+                        <strong>Description:</strong>
+                        ${module.description}
+                    </p>
+    
+                    <p>
+                        <strong>Material:</strong>
+                        <a href="${module.materialLink}" target="_blank">
+                            ${module.materialLink}
+                        </a>
+                    </p>
+    
+                    <p>
+                        <strong>Deadline:</strong>
+                        ${module.deadline}
+                    </p>
+    
+                    <p class="status"
+                        id="status-${module.id}">
+                        Status: Pending
+                    </p>
+    
+                    <button
+                        id="complete-${module.id}"
+                        disabled
+                        onclick="markComplete(${module.id})">
+                        Mark Complete
+                    </button>
+    
+                    <h3>Submit Assignment</h3>
+    
+                    <input
+                        type="text"
+                        id="assignment-${module.id}"
+                        placeholder="Paste GitHub / Google Drive Link"
+                    >
+    
+                    <button onclick="submitAssignment(${module.id})">
+                        Submit Assignment
+                    </button>
+    
+                </div>
+    
+                `;
+
+                });
+
+            });
+
+        async function submitAssignment(moduleId) {
+
+            let assignmentLink =
+                document.getElementById(
+                    `assignment-${moduleId}`
+                ).value;
+
+            if (assignmentLink.trim() === "") {
+
+                alert("Please enter an assignment link first.");
+                return;
+            }
+
+            const trainingProgress = {
+
+                employeeId: 1,
+
+                trainingModuleId: moduleId,
+
+                assignmentLink: assignmentLink,
+
+                completed: false
+            };
+
+            const response = await fetch(
+                "http://localhost:8080/training-progress",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(trainingProgress)
+                }
+            );
+
+            if (response.ok) {
+
+                alert("Assignment Submitted Successfully!");
+
+                document.getElementById(
+                    `complete-${moduleId}`
+                ).disabled = false;
+            }
+            else {
+
+                alert("Failed to Submit Assignment.");
+            }
+        }
+
+        async function markComplete(moduleId) {
+
+            const response = await fetch(
+                `http://localhost:8080/training-progress/${moduleId}/complete`,
+                {
+                    method: "PUT"
+                }
+            );
+
+            if (response.ok) {
+
+                alert("Training Module Marked as Completed!");
+
+                document.getElementById(
+                    `status-${moduleId}`
+                ).innerText = "Status: Completed";
+
+                document.getElementById(
+                    `complete-${moduleId}`
+                ).innerText = "Completed";
+
+                document.getElementById(
+                    `complete-${moduleId}`
+                ).disabled = true;
+            }
+            else {
+
+                alert("Failed to Mark Complete.");
+            }
+        }
+
+
+    </script>
+
 </body>
+
 </html>

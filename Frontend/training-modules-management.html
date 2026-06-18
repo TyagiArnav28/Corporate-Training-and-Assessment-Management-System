@@ -121,6 +121,48 @@
         </button>
 
     </form>
+<script>
 
+    document.getElementById("trainingModuleForm")
+        .addEventListener("submit", async function (event) {
+
+            event.preventDefault();
+
+            const trainingModule = {
+
+                moduleName: document.getElementById("moduleName").value,
+
+                description: document.getElementById("description").value,
+
+                materialLink: document.getElementById("materialLink").value,
+
+                deadline: document.getElementById("deadline").value,
+
+                assignedQuiz: document.getElementById("quiz").value
+            };
+
+            const response = await fetch(
+                "http://localhost:8080/training-modules",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(trainingModule)
+                }
+            );
+
+            if (response.ok) {
+                alert("Training Module Added Successfully!");
+                document.getElementById("trainingModuleForm").reset();
+            }
+            else {
+                alert("Failed to Add Training Module.");
+            }
+
+        });
+
+
+</script>
 </body>
 </html>
