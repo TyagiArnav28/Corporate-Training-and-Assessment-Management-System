@@ -1,11 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weekly Performance Review</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: rgb(199, 190, 190);
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        form {
+            background-color: lightblue;
+            width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid black;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            background-color: purple;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkmagenta;
+        }
+    </style>
+
 </head>
+
 <body>
-    
+
+    <h1>Weekly Performance Review</h1>
+
+    <p>Submit employee performance reviews.</p>
+
+    <hr style="border: 1px solid black;">
+
+    <form id="reviewForm">
+
+        <label for="employee">
+            Employee:
+        </label>
+
+        <select id="employee" required>
+
+            <option value="">
+                Select Employee
+            </option>
+
+        </select>
+
+        <label for="rating">
+            Rating (1-5):
+        </label>
+
+        <select id="rating" required>
+
+            <option value="">
+                Select Rating
+            </option>
+
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+
+        </select>
+
+        <label for="comments">
+            Comments:
+        </label>
+
+        <textarea id="comments" rows="4" placeholder="Enter comments" required></textarea>
+
+        <label for="improvementAreas">
+            Improvement Areas:
+        </label>
+
+        <textarea id="improvementAreas" rows="4" placeholder="Enter improvement areas" required></textarea>
+
+        <button type="submit">
+            Submit Review
+        </button>
+
+    </form>
+    <script>
+
+        fetch("http://localhost:8080/employees")
+            .then(response => response.json())
+            .then(employees => {
+
+                const employeeDropdown =
+                    document.getElementById("employee");
+
+                employees.forEach(employee => {
+
+                    employeeDropdown.innerHTML +=
+                        `
+            <option value="${employee.id}">
+                ${employee.name}
+            </option>
+            `;
+                });
+
+            });
+
+        document.getElementById("reviewForm")
+            .addEventListener("submit", async function (event) {
+
+                event.preventDefault();
+
+                const performanceReview = {
+
+                    employeeId:
+                        document.getElementById("employee").value,
+
+                    rating:
+                        document.getElementById("rating").value,
+
+                    comments:
+                        document.getElementById("comments").value,
+
+                    improvementAreas:
+                        document.getElementById("improvementAreas").value
+                };
+
+                const response = await fetch(
+                    "http://localhost:8080/performance-reviews",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(performanceReview)
+                    }
+                );
+
+                if (response.ok) {
+
+                    alert("Performance Review Submitted Successfully!");
+
+                    document.getElementById("reviewForm").reset();
+                }
+                else {
+
+                    alert("Failed to Submit Review.");
+                }
+
+            });
+
+    </script>
+
 </body>
+
 </html>

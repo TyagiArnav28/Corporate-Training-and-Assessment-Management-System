@@ -11,14 +11,17 @@ public class DashboardController {
     private final EmployeeRepository employeeRepository;
     private final TrainingModuleRepository trainingModuleRepository;
     private final TrainingProgressRepository trainingProgressRepository;
+    private final PerformanceReviewRepository performanceReviewRepository;
 
     public DashboardController(
             EmployeeRepository employeeRepository,
             TrainingModuleRepository trainingModuleRepository,
-            TrainingProgressRepository trainingProgressRepository) {
+            TrainingProgressRepository trainingProgressRepository,
+            PerformanceReviewRepository performanceReviewRepository) {
         this.employeeRepository = employeeRepository;
         this.trainingModuleRepository = trainingModuleRepository;
         this.trainingProgressRepository = trainingProgressRepository;
+        this.performanceReviewRepository = performanceReviewRepository;
     }
 
     @GetMapping("/employees/count") // Endpoint to get the total number of employees
@@ -51,7 +54,11 @@ public class DashboardController {
 
     @GetMapping("/underperforming/count")
     public int getUnderperformingCount() {
-        return 10; // Placeholder value for underperforming employees
+
+        return (int) performanceReviewRepository.findAll()
+                .stream()
+                .filter(review -> review.getRating() < 3)
+                .count();
     }
 }
 
