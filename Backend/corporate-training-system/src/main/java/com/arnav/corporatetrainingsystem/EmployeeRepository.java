@@ -4,4 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {   
 }
-// This interface extends JpaRepository, which provides CRUD operations for the Employee entity. The first generic parameter is the type of the entity, and the second is the type of the entity's primary key.
+// Means I want a repository for Employee objects whose primary key type is Long
+/* without writing a single method spring JPA gives 
+    employeeRepository.save(employee);
+    employeeRepository.findAll();
+    employeeRepository.findById(1L);
+    employeeRepository.count();
+    employeeRepository.deleteById(1L);
+*/

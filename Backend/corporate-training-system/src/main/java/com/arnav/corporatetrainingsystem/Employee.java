@@ -3,12 +3,12 @@ package com.arnav.corporatetrainingsystem;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
-@Entity // This annotation specifies that the class is an entity and is mapped to a database table
-@Table(name = "employees") // This annotation specifies the name of the database table to be used for mapping
+@Entity // This class represents a database table.
+@Table(name = "employees") // Connect this class to the employees table.
 public class Employee {
 
-    @Id // This annotation specifies the primary key of an entity
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // This annotation provides the specification of generation strategies for the values of primary keys
+    @Id // Primary key of an entity
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Let MySQL generate the ID automatically.
     private Long id;
 
     private String name;
