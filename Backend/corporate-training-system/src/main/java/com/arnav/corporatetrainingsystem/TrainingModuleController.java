@@ -33,20 +33,20 @@ public class TrainingModuleController {
         //finds the existing training module in the database by ID and returns it as an Optional object, 
         // which may or may not contain a value
         if (trainingModule.isPresent()) {
-            TrainingModule tm = trainingModule.get();
-            tm.setModuleName(updatedTrainingModule.getModuleName());
-            tm.setDescription(updatedTrainingModule.getDescription());
-            tm.setMaterialLink(updatedTrainingModule.getMaterialLink());
-            tm.setDeadline(updatedTrainingModule.getDeadline());
-            tm.setAssignedQuiz(updatedTrainingModule.getAssignedQuiz());
-            return trainingModuleRepository.save(tm);
+            TrainingModule tm = trainingModule.get();//getter method gets the existing training module from the Optional object
+            tm.setModuleName(updatedTrainingModule.getModuleName());//setter method updates the module name of the existing training module with the new value from the updated training module
+            tm.setDescription(updatedTrainingModule.getDescription());//setter method updates the description of the existing training module with the new value from the updated training module
+            tm.setMaterialLink(updatedTrainingModule.getMaterialLink());//setter method updates the material link of the existing training module with the new value from the updated training module
+            tm.setDeadline(updatedTrainingModule.getDeadline());//setter method updates the deadline of the existing training module with the new value from the updated training module
+            tm.setAssignedQuiz(updatedTrainingModule.getAssignedQuiz());//setter method updates the assigned quiz of the existing training module with the new value from the updated training module
+            return trainingModuleRepository.save(tm);//Saves the updated training module back to the database and returns it.
         } else {
-            return null;
+            return null;//If the training module with the specified ID does not exist, return null.
         }
     }
 
     @DeleteMapping("/training-modules/{id}")// Endpoint to delete a training module by ID
-    public void deleteTrainingModule(@PathVariable Long id) {
-        trainingModuleRepository.deleteById(id);
+    public void deleteTrainingModule(@PathVariable Long id) {// Takes the training module ID from the URL path and deletes the corresponding training module from the database.
+        trainingModuleRepository.deleteById(id);//Deletes the training module with the specified ID from the database.
     }
 }
