@@ -2,12 +2,12 @@ package com.arnav.corporatetrainingsystem;
 
 import jakarta.persistence.*;
 
-@Entity
+@Entity // Indicates that this class is being mapped to a database table
 @Table(name = "training_progress")
 public class TrainingProgress {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // Specifies the primary key of the entity
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Specifies that the primary key will be generated automatically by the database
     private Long id;
 
     private Long employeeId;
@@ -16,7 +16,7 @@ public class TrainingProgress {
 
     private String assignmentLink;
 
-    private boolean completed;
+    private boolean completed; // Indicates whether the training module has been completed by the employee
 
     public TrainingProgress() {
     }

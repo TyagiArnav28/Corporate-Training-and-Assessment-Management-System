@@ -123,14 +123,14 @@
     </form>
 <script>
 
-    document.getElementById("trainingModuleForm")
+    document.getElementById("trainingModuleForm") //gets the form element by its ID and adds an event listener
         .addEventListener("submit", async function (event) {
 
-            event.preventDefault();
+            event.preventDefault(); //prevents the default form submission behavior, which would cause a page reload.
 
-            const trainingModule = {
+            const trainingModule = { //Creates JS object trainingModule that gets the values from the form fields.
 
-                moduleName: document.getElementById("moduleName").value,
+                moduleName: document.getElementById("moduleName").value,//Gets the value of the module name input field.
 
                 description: document.getElementById("description").value,
 
@@ -141,20 +141,20 @@
                 assignedQuiz: document.getElementById("quiz").value
             };
 
-            const response = await fetch(
+            const response = await fetch( //Sends a fetch request to backend API to add the new training module to the database.
                 "http://localhost:8080/training-modules",
                 {
-                    method: "POST",
+                    method: "POST",//sends data to the server
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json"//indicates that the request body is in JSON format
                     },
-                    body: JSON.stringify(trainingModule)
+                    body: JSON.stringify(trainingModule)//converts string to JSON
                 }
             );
 
             if (response.ok) {
                 alert("Training Module Added Successfully!");
-                document.getElementById("trainingModuleForm").reset();
+                document.getElementById("trainingModuleForm").reset();//resets the form fields to their default values
             }
             else {
                 alert("Failed to Add Training Module.");

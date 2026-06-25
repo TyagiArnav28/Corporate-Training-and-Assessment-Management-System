@@ -3,12 +3,12 @@ package com.arnav.corporatetrainingsystem;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
-@Entity
+@Entity //Indicates that this class is an entity and is mapped to a database table.
 @Table(name = "training_modules")
 public class TrainingModule {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id //Specifies the primary key of an entity.
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //let db generate the id automatically
     private Long id;
 
     private String moduleName;
@@ -28,7 +28,7 @@ public class TrainingModule {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Long id) { 
         this.id = id;
     }
 

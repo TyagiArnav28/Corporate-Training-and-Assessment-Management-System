@@ -2,7 +2,7 @@ package com.arnav.corporatetrainingsystem;
 
 import jakarta.persistence.*;
 
-@Entity
+@Entity // Marks this class as a JPA entity
 @Table(name = "Performance_Reviews")
 public class PerformanceReview {
 

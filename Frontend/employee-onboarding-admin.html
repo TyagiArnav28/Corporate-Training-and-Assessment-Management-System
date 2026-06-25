@@ -106,14 +106,14 @@
             </button>
     </form>
     <script>
-        document.getElementById("employeeForm")
-            .addEventListener("submit", async function (event) {
+        document.getElementById("employeeForm") //find the form with the id "employeeForm"
+            .addEventListener("submit", async function (event) { //add an event listener, when form submitted run the function
 
-                event.preventDefault();
+                event.preventDefault(); //prevent the default form submission behavior
 
-                const employee = {
+                const employee = { //create an object with all the employee details
 
-                    name: document.getElementById("name").value,
+                    name: document.getElementById("name").value,//get the value of the input field with id "name"
 
                     email: document.getElementById("email").value,
 
@@ -123,26 +123,26 @@
 
                     joiningDate: document.getElementById("joining-date").value,
 
-                    trainingDuration: parseInt(
+                    trainingDuration: parseInt( //convert text input to integer
                         document.getElementById("duration").value
                     )
 
                 };
 
-                const response = await fetch(
+                const response = await fetch(//send a request to the backend server to add the employee
                     "http://localhost:8080/employees",
                     {
-                        method: "POST",
+                        method: "POST",//take data and save it to the database
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json" //data is in JSON format
                         },
-                        body: JSON.stringify(employee)
+                        body: JSON.stringify(employee) //convert to JSON string
                     }
                 );
 
                 if (response.ok) {
                     alert("Employee Added Successfully!");
-                    document.getElementById("employeeForm").reset();
+                    document.getElementById("employeeForm").reset();//reset the form after successful submission
                 }
                 else {
                     alert("Failed to add employee.");

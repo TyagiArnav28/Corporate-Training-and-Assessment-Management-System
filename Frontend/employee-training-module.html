@@ -67,25 +67,26 @@
 
     <hr style="border:1px solid black;">
 
-    <div id="modulesContainer">
+    <div id="modulesContainer"> <!-- Container for training modules -->
 
     </div>
 
     <script>
 
 
-        fetch("http://localhost:8080/training-modules")
-            .then(response => response.json())
-            .then(modules => {
+        fetch("http://localhost:8080/training-modules") // Fetches the list of training modules from the backend API
+            .then(response => response.json()) // converts the response to JSON format
+            .then(modules => { // processes the list of modules received from the backend
 
                 const container =
-                    document.getElementById("modulesContainer");
+                    document.getElementById("modulesContainer"); // Gets container element where modules will be displayed
 
-                modules.forEach(module => {
+                modules.forEach(module => { //for every module in the list, creates a card with module details
 
-                    container.innerHTML += `
+                container.innerHTML += // Adds the module details to the container's inner HTML
+                `
     
-                <div class="module-card">
+                <div class="module-card"> 
     
                     <h2>${module.moduleName}</h2>
     
@@ -132,44 +133,44 @@
     
                 </div>
     
-                `;
+                `//all the above HTML is added to the container for each module in the list
 
                 });
 
             });
 
-        async function submitAssignment(moduleId) {
+        async function submitAssignment(moduleId) { //Function to handle assignment submission for a specific module identified by moduleId
 
             let assignmentLink =
                 document.getElementById(
-                    `assignment-${moduleId}`
+                    `assignment-${moduleId}` //Gets the value of the assignment link input field for the specific module using its ID
                 ).value;
 
-            if (assignmentLink.trim() === "") {
+            if (assignmentLink.trim() === "") { // If the assignment link is empty, shows an alert and exits the function without submitting.
 
                 alert("Please enter an assignment link first.");
                 return;
             }
 
-            const trainingProgress = {
+            const trainingProgress = { //Creates an object that cointains the details of the training progress
 
                 employeeId: 1,
 
-                trainingModuleId: moduleId,
+                trainingModuleId: moduleId, // Associates the progress with the specific training module using its ID
 
                 assignmentLink: assignmentLink,
 
-                completed: false
+                completed: false // Initially sets the completed status to false when submitting the assignment
             };
 
-            const response = await fetch(
+            const response = await fetch( //Sends a request to the backend API to submit the assignment for the specific training module.
                 "http://localhost:8080/training-progress",
                 {
-                    method: "POST",
+                    method: "POST",// Indicates that this is a POST request to create a new resource on the server
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json"// Specifies that the request body is in JSON format
                     },
-                    body: JSON.stringify(trainingProgress)
+                    body: JSON.stringify(trainingProgress)// Converts the trainingProgress object to a JSON string
                 }
             );
 
@@ -178,8 +179,8 @@
                 alert("Assignment Submitted Successfully!");
 
                 document.getElementById(
-                    `complete-${moduleId}`
-                ).disabled = false;
+                    `complete-${moduleId}` // Enables the "Mark Complete" button for the specific module after successful assignment submission
+                ).disabled = false; // Disables the "Mark Complete" button for the specific module after successful assignment submission
             }
             else {
 
@@ -187,12 +188,12 @@
             }
         }
 
-        async function markComplete(moduleId) {
+        async function markComplete(moduleId) { //Function to handle marking a specific training module as completed, identified by moduleId
 
             const response = await fetch(
-                `http://localhost:8080/training-progress/${moduleId}/complete`,
+                `http://localhost:8080/training-progress/${moduleId}/complete`, // Sends a request to the backend API to mark the specific training module as completed using its ID
                 {
-                    method: "PUT"
+                    method: "PUT" // Indicates that this is a PUT request to update an existing resource on the server
                 }
             );
 
@@ -201,16 +202,16 @@
                 alert("Training Module Marked as Completed!");
 
                 document.getElementById(
-                    `status-${moduleId}`
-                ).innerText = "Status: Completed";
+                    `status-${moduleId}` // Updates the status text for the specific module to "Completed" after successfully marking it as completed
+                ).innerText = "Status: Completed"; 
 
                 document.getElementById(
-                    `complete-${moduleId}`
-                ).innerText = "Completed";
+                    `complete-${moduleId}` // Disables the "Mark Complete" button for the specific module after successfully marking it as completed
+                ).innerText = "Completed"; // Changes the button text to "Completed" for the specific module after successfully marking it as completed
 
                 document.getElementById(
-                    `complete-${moduleId}`
-                ).disabled = true;
+                    `complete-${moduleId}`// Disables the "Mark Complete" button for the specific module after successfully marking it as completed
+                ).disabled = true; 
             }
             else {
 

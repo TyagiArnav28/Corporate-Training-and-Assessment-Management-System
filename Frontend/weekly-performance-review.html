@@ -84,7 +84,7 @@
         <select id="employee" required>
 
             <option value="">
-                Select Employee
+                Select Employee <!-- created dropdown for employees -->
             </option>
 
         </select>
@@ -126,53 +126,53 @@
     </form>
     <script>
 
-        fetch("http://localhost:8080/employees")
-            .then(response => response.json())
-            .then(employees => {
+        fetch("http://localhost:8080/employees") // Fetches the list of employees from the backend API
+            .then(response => response.json())// Converts the response to JSON
+            .then(employees => {// Processes the list of employees
 
                 const employeeDropdown =
-                    document.getElementById("employee");
+                    document.getElementById("employee");// Gets the employee dropdown element
 
-                employees.forEach(employee => {
+                employees.forEach(employee => {// Iterates through each employee and adds them to the dropdown
 
-                    employeeDropdown.innerHTML +=
+                    employeeDropdown.innerHTML += //makes the dropdown list of employees dynamically
                         `
             <option value="${employee.id}">
                 ${employee.name}
             </option>
-            `;
+            `;// Adds an option for each employee to the dropdown
                 });
 
             });
 
-        document.getElementById("reviewForm")
-            .addEventListener("submit", async function (event) {
+        document.getElementById("reviewForm")// Gets the review form element
+            .addEventListener("submit", async function (event) {// Adds an event listener for the form submission
 
-                event.preventDefault();
+                event.preventDefault();// Prevents the default form submission behavior
 
-                const performanceReview = {
+                const performanceReview = {// Creates a performance review object with the form data
 
                     employeeId:
-                        document.getElementById("employee").value,
+                        document.getElementById("employee").value,// Gets the selected employee ID from the dropdown
 
                     rating:
-                        document.getElementById("rating").value,
+                        document.getElementById("rating").value,// Gets the selected rating from the dropdown
 
                     comments:
-                        document.getElementById("comments").value,
+                        document.getElementById("comments").value,// Gets the comments from the textarea
 
                     improvementAreas:
-                        document.getElementById("improvementAreas").value
+                        document.getElementById("improvementAreas").value// Gets the improvement areas from the textarea
                 };
 
                 const response = await fetch(
-                    "http://localhost:8080/performance-reviews",
+                    "http://localhost:8080/performance-reviews",// Sends a POST request to the backend API to submit the performance review
                     {
-                        method: "POST",
+                        method: "POST",// Specifies the method as POST
                         headers: {
-                            "Content-Type": "application/json"
+                            "Content-Type": "application/json"// Specifies the content type as JSON
                         },
-                        body: JSON.stringify(performanceReview)
+                        body: JSON.stringify(performanceReview)// Converts the performance review object to a JSON string and sends it in the request body
                     }
                 );
 
@@ -180,7 +180,7 @@
 
                     alert("Performance Review Submitted Successfully!");
 
-                    document.getElementById("reviewForm").reset();
+                    document.getElementById("reviewForm").reset();// Resets the form after successful submission
                 }
                 else {
 
