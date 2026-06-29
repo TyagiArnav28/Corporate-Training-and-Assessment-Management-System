@@ -1,6 +1,7 @@
 package com.arnav.corporatetrainingsystem;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity // Marks this class as a JPA entity
 @Table(name = "Performance_Reviews")
@@ -17,6 +18,8 @@ public class PerformanceReview {
     private String comments;
 
     private String improvementAreas;
+
+    private LocalDate reviewDate;
 
     public PerformanceReview() {
     }
@@ -59,5 +62,13 @@ public class PerformanceReview {
 
     public void setImprovementAreas(String improvementAreas) {
         this.improvementAreas = improvementAreas;
+    }
+
+    public LocalDate getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(LocalDate reviewDate) {
+        this.reviewDate = reviewDate;
     }
 }

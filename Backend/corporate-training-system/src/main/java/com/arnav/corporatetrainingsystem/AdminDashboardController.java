@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController // This class cointains REST API endpoints for the dashboard
 @CrossOrigin(origins = "*") // Allow cross-origin requests from any origin
-public class DashboardController {
+public class AdminDashboardController {
     private final EmployeeRepository employeeRepository; // This is a dependency that provides access to employee data in the database.
     private final TrainingModuleRepository trainingModuleRepository;// This is a dependency that provides access to training module data in the database.
     private final TrainingProgressRepository trainingProgressRepository;// This is a dependency that provides access to training progress data in the database.
     private final PerformanceReviewRepository performanceReviewRepository;// This is a dependency that provides access to performance review data in the database.
 
-    public DashboardController(
+    public AdminDashboardController(
             EmployeeRepository employeeRepository, //Spring automatically provides the required dependency through the class’s constructor
             TrainingModuleRepository trainingModuleRepository,//Spring automatically provides the required dependency through the class’s constructor
             TrainingProgressRepository trainingProgressRepository,//Spring automatically provides the required dependency through the class’s constructor

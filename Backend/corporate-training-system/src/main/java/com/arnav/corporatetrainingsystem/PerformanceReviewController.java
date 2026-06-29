@@ -37,6 +37,7 @@ public class PerformanceReviewController {
             review.setRating(updatedPerformanceReview.getRating());//setter method updates the rating of the existing performance review with the new value from the updated performance review
             review.setComments(updatedPerformanceReview.getComments());//setter method updates the comments of the existing performance review with the new value from the updated performance review
             review.setImprovementAreas(updatedPerformanceReview.getImprovementAreas());//setter method updates the improvement areas of the existing performance review with the new value from the updated performance review
+            review.setReviewDate(updatedPerformanceReview.getReviewDate());//setter method updates the review date of the existing performance review with the new value from the updated performance review
             return performanceReviewRepository.save(review);//Saves the updated performance review back to the database and returns it.
         } else {
             return null;//If the performance review with the specified ID does not exist, return null.

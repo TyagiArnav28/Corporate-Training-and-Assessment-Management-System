@@ -1,8 +1,13 @@
 package com.arnav.corporatetrainingsystem;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {   
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+    long countByTrainer(String trainer);
+    //counts how many employees are assigned to a particular trainer.
+    //Will incorporate this method later while creating the login logic for the trainer.
+    List<Employee> findByTrainer(String trainer);//returns all employees assigned to a particular trainer.
 }
 /* This interface extends JpaRepository, which performes all the database operations for the TrainingModule entity. 
 The JpaRepository provides methods for saving, finding, updating, and deleting entities. 

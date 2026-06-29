@@ -1,0 +1,84 @@
+package com.arnav.corporatetrainingsystem;
+
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.time.LocalDate;
+
+@RestController
+@CrossOrigin(origins = "*")
+public class TrainerDashboardController {
+    private final EmployeeRepository employeeRepository;
+    private final PerformanceReviewRepository performanceReviewRepository;
+
+    public TrainerDashboardController(EmployeeRepository employeeRepository, PerformanceReviewRepository performanceReviewRepository) {
+        this.employeeRepository = employeeRepository;
+        this.performanceReviewRepository = performanceReviewRepository;
+    }
+
+    @GetMapping("/trainer-dashboard/assigned-trainees")
+    public long getAssignedTrainees(){
+        // TODO:
+        // Replace the hardcoded trainer name with the logged-in trainer
+        // after implementing login authentication.
+        String trainer = "Rahul Sharma"; // Replace with the logged-in trainer's name
+        return employeeRepository.countByTrainer(trainer);
+    }
+
+    @GetMapping("/trainer-dashboard/pending-reviews") // Endpoint to get the number of pending performance reviews for the logged-in trainer
+    public int getPendingReviews() {
+        String trainer = "Rahul Sharma"; // Replace with the logged-in trainer's name LATER
+        List<Employee> assignedEmployees = employeeRepository.findByTrainer(trainer); 
+        // Get the list of employees assigned to the logged-in trainer by querying the EmployeeRepository for employees with the trainer's name
+        int totalEmployees = assignedEmployees.size(); 
+        // Get the total number of employees assigned to the logged-in trainer by getting the size of the list of assigned employees
+        int reviewedToday=0;// Initialize a counter to keep track of the number of performance reviews submitted today by employees assigned to 
+                        //the logged-in trainer
+        List<PerformanceReview> reviews = performanceReviewRepository.findByReviewDate(LocalDate.now()); 
+        // Get the list of performance reviews submitted today by querying the PerformanceReviewRepository for reviews with today's date
+        for (PerformanceReview review : reviews) { // Iterate through the list of performance reviews submitted today
+            for (Employee employee : assignedEmployees) {//For each performance review, iterate through the list of employees assigned to the logged-in trainer
+                if (review.getEmployeeId() == employee.getId()) {
+                //Check if the employee ID of the performance review matches the ID of any employee assigned to the logged-in trainer
+                    reviewedToday++; // If a match is found, increment the count of reviews submitted today
+                    break; // Break out of the inner loop since we found a match for this review
+                }
+            }
+        }
+        return totalEmployees - reviewedToday;// Calculate the number of pending reviews by subtracting the number of
+                                              // reviews submitted today from the total number of employees
+    }
+
+    @GetMapping("/trainer-dashboard/pending-review-employees")// Endpoint to get the list of employees who have not submitted their performance reviews for the day
+    public List<Employee> getPendingReviewEmployees() {// Returns a list of employees who have not submitted their performance reviews for the day by comparing the list of employees assigned to the logged-in trainer with the list of performance reviews submitted today.
+
+        String trainer = "Rahul Sharma";// Replace with the logged-in trainer's name LATER
+
+        List<Employee> assignedEmployees = employeeRepository.findByTrainer(trainer);
+        // Get the list of employees assigned to the logged-in trainer by querying the EmployeeRepository for employees with the trainer's name
+        List<PerformanceReview> reviews = performanceReviewRepository.findByReviewDate(java.time.LocalDate.now());
+        // Get the list of performance reviews submitted today by querying the PerformanceReviewRepository for reviews with today's date
+        List<Employee> pendingEmployees = new ArrayList<>();
+        // Create a new list to store the employees who have not submitted their performance reviews for the day
+        for (Employee employee : assignedEmployees) {// Iterate through the list of employees assigned to the logged-in trainer
+            boolean reviewed = false;// Create a boolean variable to track whether the employee has submitted their performance review for the day
+            for (PerformanceReview review : reviews) {// For each employee, iterate through the list of performance reviews submitted today
+                if (review.getEmployeeId() == employee.getId()) {// Check if the employee ID of the performance review matches the ID of the employee
+                    reviewed = true;//  If a match is found, set the reviewed variable to true to indicate that the employee has submitted their performance review for the day
+                    break;
+                }
+            }
+            if (!reviewed) {// If the employee has not submitted their performance review for the day, add them to the list of pending employees
+                pendingEmployees.add(employee);// Add the employee to the list of pending employees
+            }
+        }
+        return pendingEmployees;// Return the list of employees who have not submitted their performance reviews for the day
+    }
+
+    @GetMapping("/trainer-dashboard/quiz-performance-summary")// Endpoint to get the quiz performance summary for the logged-in trainer
+    public String getQuizPerformanceSummary() {// Returns a summary of the quiz performance for the logged-in trainer by querying the QuizRepository for quizzes created by the trainer and calculating the average score and number of attempts for each quiz.
+        return "No quizzes available";//LATER we will replace this hardcoded response with actual data.
+    }
+}
+    
