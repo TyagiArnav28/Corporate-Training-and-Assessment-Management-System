@@ -12,9 +12,12 @@ public class EmployeeDashboardController {
     private final TrainingProgressRepository trainingProgressRepository;
     // Repository to access training progress data from the database since course progress needs it.
     private final PerformanceReviewRepository performanceReviewRepository;//for feedback and performance review data, which is also needed for the employee dashboard.
-    public EmployeeDashboardController(TrainingProgressRepository trainingProgressRepository, PerformanceReviewRepository performanceReviewRepository) {
+    private final QuizAttemptRepository quizAttemptRepository;//for quiz attempt data, which is also needed for the employee dashboard.
+
+    public EmployeeDashboardController(TrainingProgressRepository trainingProgressRepository, PerformanceReviewRepository performanceReviewRepository, QuizAttemptRepository quizAttemptRepository) {
         this.trainingProgressRepository = trainingProgressRepository;
         this.performanceReviewRepository = performanceReviewRepository;
+        this.quizAttemptRepository = quizAttemptRepository;
     }
 
     @GetMapping("/employee-dashboard/course-progress")
@@ -50,4 +53,10 @@ public class EmployeeDashboardController {
     // in ascending order
     
     }//Later, when we implement login, we'll filter it by employee, exactly like in the Trainer Dashboard
+
+    @GetMapping("/employee-dashboard/score-history")
+    public List<QuizAttempt> getScoreHistory() {
+        Long employeeId = 1L; // Replace with logged-in employee later
+    return quizAttemptRepository.findByEmployeeId(employeeId);
+}
 }

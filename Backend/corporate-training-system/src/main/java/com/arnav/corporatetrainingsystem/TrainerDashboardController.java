@@ -11,10 +11,12 @@ import java.time.LocalDate;
 public class TrainerDashboardController {
     private final EmployeeRepository employeeRepository;
     private final PerformanceReviewRepository performanceReviewRepository;
+    private final QuizAttemptRepository quizAttemptRepository;
 
-    public TrainerDashboardController(EmployeeRepository employeeRepository, PerformanceReviewRepository performanceReviewRepository) {
+    public TrainerDashboardController(EmployeeRepository employeeRepository, PerformanceReviewRepository performanceReviewRepository, QuizAttemptRepository quizAttemptRepository) {
         this.employeeRepository = employeeRepository;
         this.performanceReviewRepository = performanceReviewRepository;
+        this.quizAttemptRepository = quizAttemptRepository;
     }
 
     @GetMapping("/trainer-dashboard/assigned-trainees")
@@ -76,9 +78,21 @@ public class TrainerDashboardController {
         return pendingEmployees;// Return the list of employees who have not submitted their performance reviews for the day
     }
 
-    @GetMapping("/trainer-dashboard/quiz-performance-summary")// Endpoint to get the quiz performance summary for the logged-in trainer
-    public String getQuizPerformanceSummary() {// Returns a summary of the quiz performance for the logged-in trainer by querying the QuizRepository for quizzes created by the trainer and calculating the average score and number of attempts for each quiz.
-        return "No quizzes available";//LATER we will replace this hardcoded response with actual data.
+    @GetMapping("/trainer-dashboard/quiz-performance-summary")
+    public int getQuizPerformanceSummary() {
+
+        List<QuizAttempt> attempts = quizAttemptRepository.findAll();
+
+        if (attempts.isEmpty()) {
+            return 0;
+        }
+
+        int totalScore = 0;
+
+        for (QuizAttempt attempt : attempts) {
+            totalScore += attempt.getScore();
+        }
+
+    return totalScore / attempts.size();
     }
 }
-    
