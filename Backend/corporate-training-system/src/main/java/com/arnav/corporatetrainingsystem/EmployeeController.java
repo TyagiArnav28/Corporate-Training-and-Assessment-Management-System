@@ -53,4 +53,39 @@ public class EmployeeController {
         employeeRepository.deleteById(id);// deletes the employee with the specified ID from the database.
     }
 
+    //business logic to mark an employee's onboarding as complete
+    @PutMapping("/employees/{id}/complete-onboarding")
+    public Employee completeOnboarding(@PathVariable Long id) {
+        Optional<Employee> employee = employeeRepository.findById(id);
+        if (employee.isPresent()) {
+            Employee emp = employee.get();
+            emp.setOnboardingCompleted(true);
+        return employeeRepository.save(emp);
+        } else {
+            return null;
+        }
+    }
+
+    //business logic to update an employee's profile
+    @PutMapping("/employees/{id}/profile")
+    public Employee updateProfile(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
+
+        Optional<Employee> employee = employeeRepository.findById(id);
+
+        if (employee.isPresent()) {
+
+            Employee emp = employee.get();
+
+            // Employee can only update personal details
+            emp.setName(updatedEmployee.getName());
+            emp.setEmail(updatedEmployee.getEmail());
+
+        return employeeRepository.save(emp);
+
+        } else {
+
+            return null;
+
+        }
+    }
 }

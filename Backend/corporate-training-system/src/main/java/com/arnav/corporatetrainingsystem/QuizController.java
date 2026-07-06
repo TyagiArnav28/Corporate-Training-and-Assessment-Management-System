@@ -40,6 +40,7 @@ public class QuizController {
             existingQuiz.setTimeLimit(updatedQuiz.getTimeLimit());
             existingQuiz.setPassingScore(updatedQuiz.getPassingScore());
             existingQuiz.setTrainingModuleId(updatedQuiz.getTrainingModuleId());
+            existingQuiz.setQuizLink(updatedQuiz.getQuizLink());
 
             return quizRepository.save(existingQuiz);
         }

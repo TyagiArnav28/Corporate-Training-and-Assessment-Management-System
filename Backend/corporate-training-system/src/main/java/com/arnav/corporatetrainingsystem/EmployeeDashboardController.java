@@ -27,7 +27,7 @@ public class EmployeeDashboardController {
         // Get the total number of training modules by counting all entries in the TrainingProgressRepository
         long completedModules = trainingProgressRepository.findAll()
                 .stream()
-                .filter(TrainingProgress::isCompleted)
+                .filter(progress -> progress.isCompleted())
                 .count();
         // Get the number of completed training modules by filtering the list of all training progress entries to only include those that are marked as completed, then counting the resulting list
         if (totalModules == 0) {

@@ -17,6 +17,7 @@ public class QuizAttemptController {
     // Create Quiz Attempt
     @PostMapping("/quiz-attempts")
     public QuizAttempt addQuizAttempt(@RequestBody QuizAttempt quizAttempt) {
+        quizAttempt.setStatus("PENDING");
         return quizAttemptRepository.save(quizAttempt);
     }
 
@@ -41,6 +42,8 @@ public class QuizAttemptController {
             existingAttempt.setScore(updatedQuizAttempt.getScore());
             existingAttempt.setPassed(updatedQuizAttempt.isPassed());
             existingAttempt.setAttemptDate(updatedQuizAttempt.getAttemptDate());
+            existingAttempt.setFeedback(updatedQuizAttempt.getFeedback());
+            existingAttempt.setStatus("EVALUATED");
 
             return quizAttemptRepository.save(existingAttempt);
         }

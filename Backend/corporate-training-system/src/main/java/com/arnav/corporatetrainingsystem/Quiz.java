@@ -18,6 +18,8 @@ public class Quiz {
 
     private Long trainingModuleId;
 
+    private String quizLink;
+
     public Quiz() {
     }
 
@@ -59,5 +61,13 @@ public class Quiz {
 
     public void setTrainingModuleId(Long trainingModuleId) {
         this.trainingModuleId = trainingModuleId;
+    }
+
+    public String getQuizLink() {
+        return quizLink;
+    }
+
+    public void setQuizLink(String quizLink) {
+        this.quizLink = quizLink;
     }
 }

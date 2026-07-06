@@ -23,6 +23,8 @@ public class Employee {
 
     private Integer trainingDuration;
 
+    private boolean onboardingCompleted;
+
     public Employee() {
     }
 
@@ -80,5 +82,13 @@ public class Employee {
 
     public void setTrainingDuration(Integer trainingDuration) {
         this.trainingDuration = trainingDuration;
+    }
+
+    public boolean isOnboardingCompleted() {
+        return onboardingCompleted;
+    }
+
+    public void setOnboardingCompleted(boolean onboardingCompleted) {
+        this.onboardingCompleted = onboardingCompleted;
     }
 }

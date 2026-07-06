@@ -21,6 +21,10 @@ public class QuizAttempt {
 
     private LocalDate attemptDate;
 
+    private String feedback;
+
+    private String status;
+
     public QuizAttempt() {
     }
 
@@ -70,5 +74,21 @@ public class QuizAttempt {
 
     public void setAttemptDate(LocalDate attemptDate) {
         this.attemptDate = attemptDate;
+    }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

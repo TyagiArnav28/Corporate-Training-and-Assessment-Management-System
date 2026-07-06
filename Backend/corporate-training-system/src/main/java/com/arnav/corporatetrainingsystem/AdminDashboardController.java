@@ -40,7 +40,7 @@ public class AdminDashboardController {
 
         long completedCount = trainingProgressRepository.findAll() // retrieves all training progress records from the database through the trainingProgressRepository
                 .stream() // converts the list of training progress records into a stream, allowing for functional-style operations on the data
-                .filter(TrainingProgress::isCompleted)// filters the stream to include only those training progress records where the isCompleted method returns true, indicating that the training module has been completed by the employee
+                .filter(progress -> progress.isCompleted())// filters the stream to include only those training progress records where the isCompleted method returns true, indicating that the training module has been completed by the employee
                 .count();// counts the number of training progress records that passed the filter, resulting in the total number of completed training modules
 
         if (totalProgress == 0) {// checks if there are no training progress records to avoid division by zero
