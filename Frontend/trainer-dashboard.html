@@ -39,6 +39,29 @@
             width: 300px;
             text-align: center;
         }
+
+        table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    margin-top: 20px;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: lightblue;
+}
     </style>
 </head>
 <body>
@@ -48,16 +71,59 @@
     <h2> <u>Overview</u> </h2>
     <div class="card">
         <h3>Assigned trainees: </h3>
-        <p style="text-align: center;">100</p>
+        <p
+        style="text-align:center;"
+        id="assignedTrainees">
+
+        Loading...
+
+        </p>
     </div>
     <div class="card">
         <h3>Pending reviews: </h3>
-        <p style="text-align: center;">5</p>
+        <p
+        style="text-align:center;"
+        id="pendingReviews">
+
+        Loading...
+
+        </p>
     </div>
     <div class="card">
         <h3>Quiz performance summary: </h3>
-        <p style="text-align: center;">85%</p>
+        <p
+        style="text-align:center;"
+        id="quizPerformance">
+
+        Loading...
+
+        </p>
     </div>
+    <hr>
+
+<h2>Employees Pending Review</h2>
+
+<table id="pendingEmployeeTable">
+
+    <thead>
+
+        <tr>
+
+            <th>Employee ID</th>
+
+            <th>Name</th>
+
+            <th>Department</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    </tbody>
+
+</table>
     <br>
         <h2 style="text-align: left;"><u>Training module</u></h2>
         <p>Click below to manage training modules: </p>
@@ -72,5 +138,75 @@
         <button onclick="window.location.href='weekly-performance-review.html'">Give Weekly Performance Reviews</button>
     <br>
     <br>
+    <script>
+
+fetch("http://localhost:8080/trainer-dashboard/assigned-trainees")
+
+.then(response=>response.text())
+
+.then(data=>{
+
+    document.getElementById(
+        "assignedTrainees"
+    ).innerText=data;
+
+});
+
+fetch("http://localhost:8080/trainer-dashboard/pending-reviews")
+
+.then(response=>response.text())
+
+.then(data=>{
+
+    document.getElementById(
+        "pendingReviews"
+    ).innerText=data;
+
+});
+
+fetch("http://localhost:8080/trainer-dashboard/quiz-performance-summary")
+
+.then(response=>response.text())
+
+.then(data=>{
+
+    document.getElementById(
+        "quizPerformance"
+    ).innerText=data+"%";
+
+});
+
+fetch("http://localhost:8080/trainer-dashboard/pending-review-employees")
+
+.then(response=>response.json())
+
+.then(employees=>{
+
+    const tableBody =
+        document.querySelector("#pendingEmployeeTable tbody");
+
+    tableBody.innerHTML="";
+
+    employees.forEach(employee=>{
+
+        tableBody.innerHTML+=`
+
+        <tr>
+
+            <td>${employee.id}</td>
+
+            <td>${employee.name}</td>
+
+            <td>${employee.department}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+});
+
+</script>
 </body>
 </html>

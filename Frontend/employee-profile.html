@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Employee Profile</title>
+
+    <style>
+
+        body{
+            font-family:sans-serif;
+            background-color:rgb(199,190,190);
+            margin:0;
+            padding:20px;
+        }
+
+        h1,p{
+            text-align:center;
+        }
+
+        form{
+
+            background-color:lightblue;
+            width:600px;
+            margin:20px auto;
+            padding:20px;
+            border-radius:10px;
+            border:1px solid black;
+
+        }
+
+        label{
+
+            display:block;
+            margin-top:15px;
+            font-weight:bold;
+
+        }
+
+        input{
+
+            width:100%;
+            padding:8px;
+            margin-top:5px;
+            box-sizing:border-box;
+
+        }
+
+        button{
+
+            width:100%;
+            padding:10px;
+            margin-top:20px;
+            background-color:purple;
+            color:white;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+
+        }
+
+        button:hover{
+
+            background-color:darkmagenta;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Employee Profile</h1>
+
+<p>View and update your profile information.</p>
+
+<hr>
+
+<form id="profileForm">
+
+    <label for="employeeId">
+        Employee ID
+    </label>
+
+    <input
+        type="number"
+        id="employeeId"
+        readonly>
+
+    <label for="name">
+        Name
+    </label>
+
+    <input
+        type="text"
+        id="name"
+        required>
+
+    <label for="email">
+        Email
+    </label>
+
+    <input
+        type="email"
+        id="email"
+        required>
+
+    <label for="department">
+        Department
+    </label>
+
+    <input
+        type="text"
+        id="department"
+        readonly>
+
+    <label for="trainer">
+        Trainer
+    </label>
+
+    <input
+        type="text"
+        id="trainer"
+        readonly>
+
+    <label for="joiningDate">
+        Joining Date
+    </label>
+
+    <input
+        type="date"
+        id="joiningDate"
+        readonly>
+
+    <label for="trainingDuration">
+        Training Duration (Weeks)
+    </label>
+
+    <input
+        type="number"
+        id="trainingDuration"
+        readonly>
+
+    <label>
+        Onboarding Status
+    </label>
+
+    <input
+        type="text"
+        id="onboardingStatus"
+        readonly>
+
+    <button
+        type="button"
+        onclick="updateProfile()">
+
+        Update Profile
+
+    </button>
+
+    <button
+        type="button"
+        onclick="window.location.href='employee-dashboard.html'">
+
+        Back to Dashboard
+
+    </button>
+
+</form>
+
+<script>
+
+const employeeId = 1;
+
+// Loads the employee profile when the page opens.
+async function loadProfile(){
+
+    const response =
+        await fetch("http://localhost:8080/employees");
+
+    const employees =
+        await response.json();
+
+    const employee =
+        employees.find(emp => emp.id == employeeId);
+
+    if(!employee){
+
+        alert("Employee not found.");
+
+        return;
+
+    }
+
+    document.getElementById("employeeId").value =
+        employee.id;
+
+    document.getElementById("name").value =
+        employee.name;
+
+    document.getElementById("email").value =
+        employee.email;
+
+    document.getElementById("department").value =
+        employee.department;
+
+    document.getElementById("trainer").value =
+        employee.trainer;
+
+    document.getElementById("joiningDate").value =
+        employee.joiningDate;
+
+    document.getElementById("trainingDuration").value =
+        employee.trainingDuration;
+
+    document.getElementById("onboardingStatus").value =
+        employee.onboardingCompleted ?
+        "Completed" :
+        "Pending";
+
+}
+
+// Updates only the editable fields while keeping the remaining values unchanged.
+async function updateProfile(){
+
+    const response =
+        await fetch("http://localhost:8080/employees");
+
+    const employees =
+        await response.json();
+
+    const employee =
+        employees.find(emp => emp.id == employeeId);
+
+    if(!employee){
+
+        alert("Employee not found.");
+
+        return;
+
+    }
+
+    const updatedEmployee = {
+
+        name:document.getElementById("name").value,
+
+        email:document.getElementById("email").value,
+
+        department:employee.department,
+
+        trainer:employee.trainer,
+
+        joiningDate:employee.joiningDate,
+
+        trainingDuration:employee.trainingDuration,
+
+        onboardingCompleted:employee.onboardingCompleted
+
+    };
+
+    const updateResponse =
+        await fetch(
+
+            "http://localhost:8080/employees/" + employeeId,
+
+            {
+
+                method:"PUT",
+
+                headers:{
+
+                    "Content-Type":"application/json"
+
+                },
+
+                body:JSON.stringify(updatedEmployee)
+
+            }
+
+        );
+
+    if(updateResponse.ok){
+
+        alert("Profile Updated Successfully!");
+
+        loadProfile();
+
+    }
+
+    else{
+
+        alert("Failed to Update Profile.");
+
+    }
+
+}
+
+// Loads profile when page opens.
+loadProfile();
+
+</script>
+
+</body>
+
+</html>

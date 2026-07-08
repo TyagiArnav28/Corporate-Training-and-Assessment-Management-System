@@ -14,16 +14,19 @@ public class EmployeeController {
         this.employeeRepository = employeeRepository;//Stores it in the field so methods can use it.
     }
 
+    //create the employees
     @PostMapping("/employees") // when someone sends data to this endpoint run this method
     public Employee addEmployee(@RequestBody Employee employee) {//Takes JSON from the request body and converts it into an Employee object.
         return employeeRepository.save(employee);//Saves the employee to the database.
     }
 
+    //get all employees
     @GetMapping("/employees") // gets requests to /employees
     public List<Employee> getEmployees() { //returns a list of all employees in the database
         return employeeRepository.findAll(); //gets all employees from database
     }
 
+    //update an employee
     @PutMapping("/employees/{id}")// Endpoint to update an existing employee
     public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee updatedEmployee) { 
 // Takes the employee ID from the URL path and the updated employee data from the request body, 
@@ -48,25 +51,26 @@ public class EmployeeController {
         return null;// returns null if the employee with the specified ID was not found in the database.
     }
 
+    //delete an employee
     @DeleteMapping("/employees/{id}")// Endpoint to delete an employee by ID
     public void deleteEmployee(@PathVariable Long id) {// Takes the employee ID from the URL path and deletes the corresponding employee from the database.
         employeeRepository.deleteById(id);// deletes the employee with the specified ID from the database.
     }
 
-    //business logic to mark an employee's onboarding as complete
+    //logic to mark an employee's onboarding as complete
     @PutMapping("/employees/{id}/complete-onboarding")
-    public Employee completeOnboarding(@PathVariable Long id) {
+    public Employee completeOnboarding(@PathVariable Long id) {// Takes the employee ID from the URL path and marks the onboarding process as complete for the corresponding employee.
         Optional<Employee> employee = employeeRepository.findById(id);
-        if (employee.isPresent()) {
-            Employee emp = employee.get();
-            emp.setOnboardingCompleted(true);
+        if (employee.isPresent()) {// checks if the employee with the specified ID exists in the database
+            Employee emp = employee.get(); // gets the actual Employee object from the Optional, allowing access to its fields and methods.
+            emp.setOnboardingCompleted(true);// sets the onboardingCompleted field of the employee to true, indicating that the onboarding process is complete.
         return employeeRepository.save(emp);
         } else {
             return null;
         }
     }
 
-    //business logic to update an employee's profile
+    //logic to update an employee's profile
     @PutMapping("/employees/{id}/profile")
     public Employee updateProfile(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
 

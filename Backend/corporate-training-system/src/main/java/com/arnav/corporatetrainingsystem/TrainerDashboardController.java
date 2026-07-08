@@ -81,15 +81,15 @@ public class TrainerDashboardController {
     @GetMapping("/trainer-dashboard/quiz-performance-summary")
     public int getQuizPerformanceSummary() {
 
-        List<QuizAttempt> attempts = quizAttemptRepository.findAll();
+        List<QuizAttempt> attempts = quizAttemptRepository.findAll();// Get all quiz attempts from the database by querying the QuizAttemptRepository for all quiz attempts
 
-        if (attempts.isEmpty()) {
+        if (attempts.isEmpty()) {// Check if there are no quiz attempts in the database
             return 0;
         }
 
         int totalScore = 0;
 
-        for (QuizAttempt attempt : attempts) {
+        for (QuizAttempt attempt : attempts) {// Iterate through the list of quiz attempts and sum up the scores of all attempts to calculate the total score
             totalScore += attempt.getScore();
         }
 

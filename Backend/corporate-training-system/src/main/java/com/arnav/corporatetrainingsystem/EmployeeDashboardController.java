@@ -57,6 +57,6 @@ public class EmployeeDashboardController {
     @GetMapping("/employee-dashboard/score-history")
     public List<QuizAttempt> getScoreHistory() {
         Long employeeId = 1L; // Replace with logged-in employee later
-    return quizAttemptRepository.findByEmployeeId(employeeId);
+    return quizAttemptRepository.findByEmployeeId(employeeId);// Query the QuizAttemptRepository for all quiz attempts made by the logged-in employee, and return the list of attempts
 }
 }

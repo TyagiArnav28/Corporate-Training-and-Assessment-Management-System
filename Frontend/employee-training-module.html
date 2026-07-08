@@ -70,6 +70,13 @@
     <div id="modulesContainer"> <!-- Container for training modules -->
 
     </div>
+    <br>
+    
+    <button onclick="window.location.href='employee-dashboard.html'">
+    
+        Back to Dashboard
+    
+    </button>
 
     <script>
 
@@ -127,8 +134,10 @@
                         placeholder="Paste GitHub / Google Drive Link"
                     >
     
-                    <button onclick="submitAssignment(${module.id})">
+                    <button id="submit-${module.id}" onclick="submitAssignment(${module.id})">
+
                         Submit Assignment
+
                     </button>
     
                 </div>
@@ -146,9 +155,9 @@
                     `assignment-${moduleId}` //Gets the value of the assignment link input field for the specific module using its ID
                 ).value;
 
-            if (assignmentLink.trim() === "") { // If the assignment link is empty, shows an alert and exits the function without submitting.
+            if (assignmentLink.trim() === "" || !(assignmentLink.startsWith("http://")||assignmentLink.startsWith("https://"))) { // If the assignment link is empty or invalid, shows an alert and exits the function without submitting.
 
-                alert("Please enter an assignment link first.");
+                alert("Please enter a valid GitHub or Google Drive link.");
                 return;
             }
 
@@ -177,6 +186,17 @@
             if (response.ok) {
 
                 alert("Assignment Submitted Successfully!");
+                document.getElementById(
+                    `submit-${moduleId}`
+                )   .disabled = true;
+
+                document.getElementById(
+                    `submit-${moduleId}`
+                )   .innerText = "Assignment Submitted";
+
+                document.getElementById(
+                    `assignment-${moduleId}`
+                )    .disabled = true;
 
                 document.getElementById(
                     `complete-${moduleId}` // Enables the "Mark Complete" button for the specific module after successful assignment submission

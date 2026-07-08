@@ -1,11 +1,502 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assessment and Quiz Modules</title>
+    <title>Assessment & Quiz Management</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: rgb(199, 190, 190);
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1,
+        h2,
+        p {
+            text-align: center;
+        }
+
+        form {
+            background-color: lightblue;
+            width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid black;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            border: none;
+            background-color: purple;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkmagenta;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: lightblue;
+        }
+    </style>
 </head>
+
 <body>
+
+    <h1>Assessment & Quiz Management</h1>
+
+    <p>Create and manage quizzes for training modules.</p>
+
+    <hr>
+
+    <form id="quizForm">
+
+        <label for="quizId">Quiz ID:</label>
+        <input type="number" id="quizId" placeholder="Enter Quiz ID for Update/Delete">
+
+        <label for="quizTitle">Quiz Title:</label>
+        <input type="text" id="quizTitle" placeholder="Enter Quiz Title" required>
+
+        <label for="trainingModuleId">Training Module ID:</label>
+        <input type="number" id="trainingModuleId" placeholder="Enter Training Module ID" required>
+
+        <label for="quizLink">Quiz Link:</label>
+        <input type="url" id="quizLink" placeholder="Paste Quiz Link" required>
+
+        <label for="timeLimit">Time Limit (Minutes):</label>
+        <input type="number" id="timeLimit" placeholder="Enter Time Limit" required>
+
+        <label for="passingScore">Passing Score (%):</label>
+        <input type="number" id="passingScore" placeholder="Enter Passing Score" required>
+
+        <button type="submit">Create Quiz</button>
+
+        <button type="button" onclick="updateQuiz()">
+            Update Quiz
+        </button>
+
+        <button type="button" onclick="deleteQuiz()">
+            Delete Quiz
+        </button>
+
+        <button type="button" onclick="window.location.href='trainer-dashboard.html'">
+            Back to Dashboard
+        </button>
+
+    </form>
+
+    <hr>
+
+    <h2>Current Quizzes</h2>
+
+    <table id="quizTable">
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Quiz Title</th>
+                <th>Training Module ID</th>
+                <th>Quiz Link</th>
+                <th>Time Limit</th>
+                <th>Passing Score</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+        </tbody>
+
+    </table>
+
+    <hr>
     
+    <h2>Submitted Quiz Attempts</h2>
+    
+    <table id="quizAttemptTable">
+    
+        <thead>
+    
+            <tr>
+    
+                <th>Attempt ID</th>
+                <th>Employee ID</th>
+                <th>Quiz ID</th>
+                <th>Score</th>
+                <th>Status</th>
+                <th>Feedback</th>
+    
+            </tr>
+    
+        </thead>
+    <tbody>
+    
+    </tbody>
+    
+    </table>
+    
+    <hr>
+    
+    <h2>Evaluate Quiz Attempt</h2>
+    
+    <form id="evaluationForm">
+    
+        <label for="attemptId">
+            Attempt ID
+        </label>
+    
+        <input type="number" id="attemptId" required>
+    
+        <label for="attemptScore">
+            Score
+        </label>
+    
+        <input type="number" id="attemptScore" required>
+    
+        <label for="attemptFeedback">
+            Feedback
+        </label>
+    
+        <input type="text" id="attemptFeedback" required>
+    
+        <label for="attemptPassed">
+            Result
+        </label>
+    
+        <select id="attemptPassed">
+    
+            <option value="true">
+                Passed
+            </option>
+    
+            <option value="false">
+                Failed
+            </option>
+    
+        </select>
+    
+        <button type="button" onclick="evaluateAttempt()">
+    
+            Evaluate Attempt
+    
+        </button>
+    
+    </form>
+
+    <script>
+
+        async function loadQuizzes() {
+
+            const response = await fetch("http://localhost:8080/quizzes");
+
+            const quizzes = await response.json();
+
+            const tableBody = document.querySelector("#quizTable tbody");
+
+            tableBody.innerHTML = "";
+
+            quizzes.forEach(quiz => {
+
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${quiz.id}</td>
+                        <td>${quiz.quizTitle}</td>
+                        <td>${quiz.trainingModuleId}</td>
+                        <td>${quiz.quizLink}</td>
+                        <td>${quiz.timeLimit}</td>
+                        <td>${quiz.passingScore}%</td>
+                    </tr>
+                `;
+
+            });
+
+        }
+
+        document.getElementById("quizForm")
+            .addEventListener("submit", async function (event) {
+
+                event.preventDefault();
+
+                const quiz = {
+
+                    quizTitle: document.getElementById("quizTitle").value,
+
+                    trainingModuleId: parseInt(document.getElementById("trainingModuleId").value),
+
+                    quizLink: document.getElementById("quizLink").value,
+
+                    timeLimit: parseInt(document.getElementById("timeLimit").value),
+
+                    passingScore: parseInt(document.getElementById("passingScore").value)
+
+                };
+
+                const response = await fetch(
+                    "http://localhost:8080/quizzes",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(quiz)
+                    }
+                );
+
+                if (response.ok) {
+
+                    alert("Quiz Created Successfully!");
+
+                    document.getElementById("quizForm").reset();
+
+                    loadQuizzes();
+
+                }
+                else {
+
+                    alert("Failed to Create Quiz.");
+
+                }
+
+            });
+
+        async function updateQuiz() {
+
+            const quizId = document.getElementById("quizId").value;
+
+            const updatedQuiz = {
+
+                quizTitle: document.getElementById("quizTitle").value,
+
+                trainingModuleId: parseInt(document.getElementById("trainingModuleId").value),
+
+                quizLink: document.getElementById("quizLink").value,
+
+                timeLimit: parseInt(document.getElementById("timeLimit").value),
+
+                passingScore: parseInt(document.getElementById("passingScore").value)
+
+            };
+
+            const response = await fetch(
+                "http://localhost:8080/quizzes/" + quizId,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(updatedQuiz)
+                }
+            );
+
+            if (response.ok) {
+
+                alert("Quiz Updated Successfully!");
+
+                document.getElementById("quizForm").reset();
+
+                loadQuizzes();
+
+            }
+            else {
+
+                alert("Update Failed!");
+
+            }
+
+        }
+
+        async function deleteQuiz() {
+
+            const quizId = document.getElementById("quizId").value;
+
+            const response = await fetch(
+                "http://localhost:8080/quizzes/" + quizId,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            if (response.ok) {
+
+                alert("Quiz Deleted Successfully!");
+
+                document.getElementById("quizForm").reset();
+
+                loadQuizzes();
+
+            }
+            else {
+
+                alert("Delete Failed!");
+
+            }
+
+        }
+
+        async function evaluateAttempt() {
+
+    const attemptId =
+        document.getElementById("attemptId").value;
+
+    const response =
+        await fetch("http://localhost:8080/quiz-attempts");
+
+    const attempts = await response.json();
+
+    const attempt =
+        attempts.find(a => a.id == attemptId);
+
+    if (!attempt) {
+
+        alert("Attempt not found.");
+
+        return;
+
+    }
+
+    const updatedAttempt = {
+
+        employeeId: attempt.employeeId,
+
+        quizId: attempt.quizId,
+
+        score: parseInt(
+            document.getElementById("attemptScore").value
+        ),
+
+        passed:
+            document.getElementById("attemptPassed").value === "true",
+
+        attemptDate: attempt.attemptDate,
+
+        feedback:
+            document.getElementById("attemptFeedback").value
+
+    };
+
+    const updateResponse = await fetch(
+
+        "http://localhost:8080/quiz-attempts/" + attemptId,
+
+        {
+
+            method: "PUT",
+
+            headers: {
+
+                "Content-Type": "application/json"
+
+            },
+
+            body: JSON.stringify(updatedAttempt)
+
+        }
+
+    );
+
+    if (updateResponse.ok) {
+
+        alert("Quiz Evaluated Successfully!");
+
+        document.getElementById("evaluationForm").reset();
+
+        loadQuizAttempts();
+
+    }
+    else {
+
+        alert("Evaluation Failed!");
+
+    }
+
+}
+
+        loadQuizzes();
+        loadQuizAttempts();
+
+        async function loadQuizAttempts() {
+
+            const response = await fetch(
+                "http://localhost:8080/quiz-attempts"
+            );
+
+            const attempts = await response.json();
+
+            const tableBody =
+                document.querySelector("#quizAttemptTable tbody");
+
+            tableBody.innerHTML = "";
+
+            attempts.forEach(attempt => {
+
+                tableBody.innerHTML += `
+
+            <tr>
+
+                <td>${attempt.id}</td>
+
+                <td>${attempt.employeeId}</td>
+
+                <td>${attempt.quizId}</td>
+
+                <td>${attempt.score}</td>
+
+                <td>${attempt.status}</td>
+
+                <td>${attempt.feedback ?? "-"}</td>
+
+            </tr>
+
+            `;
+
+        });
+
+    }
+
+    </script>
+
 </body>
+
 </html>

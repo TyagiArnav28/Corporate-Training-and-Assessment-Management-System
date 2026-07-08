@@ -2,194 +2,392 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <title>Weekly Performance Review</title>
 
     <style>
-        body {
-            font-family: sans-serif;
-            background-color: rgb(199, 190, 190);
-            margin: 0;
-            padding: 20px;
+
+        body{
+            font-family:sans-serif;
+            background-color:rgb(199,190,190);
+            margin:0;
+            padding:20px;
         }
 
-        h1 {
-            text-align: center;
+        h1,h2,p{
+            text-align:center;
         }
 
-        p {
-            text-align: center;
+        form{
+            background-color:lightblue;
+            width:600px;
+            margin:20px auto;
+            padding:20px;
+            border-radius:10px;
+            border:1px solid black;
         }
 
-        form {
-            background-color: lightblue;
-            width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid black;
-        }
-
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
+        label{
+            display:block;
+            margin-top:15px;
+            font-weight:bold;
         }
 
         input,
-        textarea,
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            box-sizing: border-box;
+        textarea{
+            width:100%;
+            padding:8px;
+            margin-top:5px;
+            box-sizing:border-box;
         }
 
-        textarea {
-            resize: vertical;
+        textarea{
+            resize:vertical;
         }
 
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-            border: none;
-            background-color: purple;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
+        button{
+            width:100%;
+            padding:10px;
+            margin-top:15px;
+            background-color:purple;
+            color:white;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
         }
 
-        button:hover {
-            background-color: darkmagenta;
+        button:hover{
+            background-color:darkmagenta;
         }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            margin-top:20px;
+        }
+
+        table,
+        th,
+        td{
+            border:1px solid black;
+        }
+
+        th,
+        td{
+            padding:10px;
+            text-align:center;
+        }
+
+        th{
+            background-color:lightblue;
+        }
+
     </style>
 
 </head>
 
 <body>
 
-    <h1>Weekly Performance Review</h1>
+<h1>Weekly Performance Review</h1>
 
-    <p>Submit employee performance reviews.</p>
+<p>Submit and manage employee performance reviews.</p>
 
-    <hr style="border: 1px solid black;">
+<hr>
 
-    <form id="reviewForm">
+<form id="performanceReviewForm">
 
-        <label for="employee">
-            Employee:
-        </label>
+    <label for="reviewId">Review ID:</label>
+    <input
+        type="number"
+        id="reviewId"
+        placeholder="Enter Review ID for Update/Delete">
 
-        <select id="employee" required>
+    <label for="employeeId">Employee ID:</label>
+    <input
+        type="number"
+        id="employeeId"
+        placeholder="Enter Employee ID"
+        required>
 
-            <option value="">
-                Select Employee <!-- created dropdown for employees -->
-            </option>
+    <label for="rating">Rating (1-5):</label>
+    <input
+        type="number"
+        id="rating"
+        min="1"
+        max="5"
+        required>
 
-        </select>
+    <label for="comments">Comments:</label>
+    <textarea
+        id="comments"
+        rows="4"
+        placeholder="Enter Comments"
+        required></textarea>
 
-        <label for="rating">
-            Rating (1-5):
-        </label>
+    <label for="improvementAreas">Improvement Areas:</label>
+    <textarea
+        id="improvementAreas"
+        rows="4"
+        placeholder="Enter Improvement Areas"
+        required></textarea>
 
-        <select id="rating" required>
+    <label for="reviewDate">Review Date:</label>
+    <input
+        type="date"
+        id="reviewDate"
+        required>
 
-            <option value="">
-                Select Rating
-            </option>
+    <button type="submit">
+        Submit Review
+    </button>
 
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+    <button
+        type="button"
+        onclick="updateReview()">
 
-        </select>
+        Update Review
 
-        <label for="comments">
-            Comments:
-        </label>
+    </button>
 
-        <textarea id="comments" rows="4" placeholder="Enter comments" required></textarea>
+    <button
+        type="button"
+        onclick="deleteReview()">
 
-        <label for="improvementAreas">
-            Improvement Areas:
-        </label>
+        Delete Review
 
-        <textarea id="improvementAreas" rows="4" placeholder="Enter improvement areas" required></textarea>
+    </button>
 
-        <button type="submit">
-            Submit Review
-        </button>
+    <button
+        type="button"
+        onclick="window.location.href='trainer-dashboard.html'">
 
-    </form>
-    <script>
+        Back to Dashboard
 
-        fetch("http://localhost:8080/employees") // Fetches the list of employees from the backend API
-            .then(response => response.json())// Converts the response to JSON
-            .then(employees => {// Processes the list of employees
+    </button>
 
-                const employeeDropdown =
-                    document.getElementById("employee");// Gets the employee dropdown element
+</form>
 
-                employees.forEach(employee => {// Iterates through each employee and adds them to the dropdown
+<hr>
 
-                    employeeDropdown.innerHTML += //makes the dropdown list of employees dynamically
-                        `
-            <option value="${employee.id}">
-                ${employee.name}
-            </option>
-            `;// Adds an option for each employee to the dropdown
-                });
+<h2>Current Performance Reviews</h2>
 
-            });
+<table id="reviewTable">
 
-        document.getElementById("reviewForm")// Gets the review form element
-            .addEventListener("submit", async function (event) {// Adds an event listener for the form submission
+    <thead>
 
-                event.preventDefault();// Prevents the default form submission behavior
+        <tr>
 
-                const performanceReview = {// Creates a performance review object with the form data
+            <th>ID</th>
+            <th>Employee ID</th>
+            <th>Rating</th>
+            <th>Comments</th>
+            <th>Improvement Areas</th>
+            <th>Review Date</th>
 
-                    employeeId:
-                        document.getElementById("employee").value,// Gets the selected employee ID from the dropdown
+        </tr>
 
-                    rating:
-                        document.getElementById("rating").value,// Gets the selected rating from the dropdown
+    </thead>
 
-                    comments:
-                        document.getElementById("comments").value,// Gets the comments from the textarea
+    <tbody>
 
-                    improvementAreas:
-                        document.getElementById("improvementAreas").value// Gets the improvement areas from the textarea
-                };
+    </tbody>
 
-                const response = await fetch(
-                    "http://localhost:8080/performance-reviews",// Sends a POST request to the backend API to submit the performance review
-                    {
-                        method: "POST",// Specifies the method as POST
-                        headers: {
-                            "Content-Type": "application/json"// Specifies the content type as JSON
-                        },
-                        body: JSON.stringify(performanceReview)// Converts the performance review object to a JSON string and sends it in the request body
-                    }
-                );
+</table>
 
-                if (response.ok) {
+<script>
 
-                    alert("Performance Review Submitted Successfully!");
+async function loadReviews(){
 
-                    document.getElementById("reviewForm").reset();// Resets the form after successful submission
-                }
-                else {
+    const response = await fetch(
+        "http://localhost:8080/performance-reviews"
+    );
 
-                    alert("Failed to Submit Review.");
-                }
+    const reviews = await response.json();
 
-            });
+    const tableBody =
+        document.querySelector("#reviewTable tbody");
 
-    </script>
+    tableBody.innerHTML="";
+
+    reviews.forEach(review=>{
+
+        tableBody.innerHTML+=`
+
+        <tr>
+
+            <td>${review.id}</td>
+
+            <td>${review.employeeId}</td>
+
+            <td>${review.rating}</td>
+
+            <td>${review.comments}</td>
+
+            <td>${review.improvementAreas}</td>
+
+            <td>${review.reviewDate}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+document.getElementById("performanceReviewForm")
+.addEventListener("submit",async function(event){
+
+    event.preventDefault();
+
+    const review={
+
+        employeeId:parseInt(document.getElementById("employeeId").value),
+
+        rating:parseInt(document.getElementById("rating").value),
+
+        comments:document.getElementById("comments").value,
+
+        improvementAreas:document.getElementById("improvementAreas").value,
+
+        reviewDate:document.getElementById("reviewDate").value
+
+    };
+
+    const response=await fetch(
+
+        "http://localhost:8080/performance-reviews",
+
+        {
+
+            method:"POST",
+
+            headers:{
+
+                "Content-Type":"application/json"
+
+            },
+
+            body:JSON.stringify(review)
+
+        }
+
+    );
+
+    if(response.ok){
+
+        alert("Performance Review Submitted Successfully!");
+
+        document.getElementById("performanceReviewForm").reset();
+
+        loadReviews();
+
+    }
+
+    else{
+
+        alert("Failed to Submit Review.");
+
+    }
+
+});
+
+async function updateReview(){
+
+    const reviewId=document.getElementById("reviewId").value;
+
+    const review={
+
+        employeeId:parseInt(document.getElementById("employeeId").value),
+
+        rating:parseInt(document.getElementById("rating").value),
+
+        comments:document.getElementById("comments").value,
+
+        improvementAreas:document.getElementById("improvementAreas").value,
+
+        reviewDate:document.getElementById("reviewDate").value
+
+    };
+
+    const response=await fetch(
+
+        "http://localhost:8080/performance-reviews/"+reviewId,
+
+        {
+
+            method:"PUT",
+
+            headers:{
+
+                "Content-Type":"application/json"
+
+            },
+
+            body:JSON.stringify(review)
+
+        }
+
+    );
+
+    if(response.ok){
+
+        alert("Performance Review Updated Successfully!");
+
+        document.getElementById("performanceReviewForm").reset();
+
+        loadReviews();
+
+    }
+
+    else{
+
+        alert("Update Failed!");
+
+    }
+
+}
+
+async function deleteReview(){
+
+    const reviewId=document.getElementById("reviewId").value;
+
+    const response=await fetch(
+
+        "http://localhost:8080/performance-reviews/"+reviewId,
+
+        {
+
+            method:"DELETE"
+
+        }
+
+    );
+
+    if(response.ok){
+
+        alert("Performance Review Deleted Successfully!");
+
+        document.getElementById("performanceReviewForm").reset();
+
+        loadReviews();
+
+    }
+
+    else{
+
+        alert("Delete Failed!");
+
+    }
+
+}
+
+loadReviews();
+
+</script>
 
 </body>
 

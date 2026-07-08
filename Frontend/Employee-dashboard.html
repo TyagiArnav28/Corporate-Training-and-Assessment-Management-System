@@ -1,131 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <title>Employee Dashboard</title>
+
     <style>
         body {
             background-color: rgb(199, 190, 190);
-            font-family:sans-serif;
+            font-family: sans-serif;
         }
-        h1{
-            color: black;
+
+        h1 {
             text-align: center;
         }
-        p{
-            color: black;
+
+        h2 {
+            text-align: center;
+        }
+
+        p {
             text-align: left;
         }
-         h2 {
-            color: black;
-            text-align: center;
-        }
-        button {
-            background-color: purple;
-            border: 1px solid #000000;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: darkmagenta;
-        }
+
         .card {
+
             background-color: lightblue;
-            border: 1px solid #000000;
+            border: 1px solid black;
             border-radius: 10px;
             padding: 15px;
             margin: 15px auto;
             width: 300px;
             text-align: center;
+
         }
+
         table {
+
             background-color: lightblue;
-            width: 80%;
-            margin: 0 auto;
+            width: 90%;
+            margin: auto;
             border-collapse: collapse;
+
         }
-        th, td {
-            border: 1px solid #000000;
+
+        table,
+        th,
+        td {
+
+            border: 1px solid black;
+
+        }
+
+        th,
+        td {
+
             padding: 10px;
             text-align: center;
+
+        }
+
+        button {
+
+            background-color: purple;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin: 10px;
+
+        }
+
+        button:hover {
+
+            background-color: darkmagenta;
+
         }
     </style>
+
 </head>
+
 <body>
+
     <h1>Employee Dashboard</h1>
-    <p style="font-size: large;"> Welcome Employee!. Here are all the details: </p>
-    <hr style="border: 1px solid #000000;">
-    <h2> <u>Overview</u> </h2>
+
+    <p style="font-size:large;">
+        Welcome Employee! Here are your training details.
+    </p>
+
+    <hr>
+
+    <h2><u>Overview</u></h2>
+
     <div class="card">
-        <h3>Course Progress: </h3>
-        <p style="text-align: center;">85%</p>
+
+        <h3>Course Progress</h3>
+
+        <p id="courseProgress" style="text-align:center;">
+
+            Loading...
+
+        </p>
+
     </div>
-    <div>
-        <h3 style="text-align: center;">Score History: </h3>
-        <table>
+
+    <br>
+
+    <h2>Score History</h2>
+
+    <table id="scoreHistoryTable">
+
+        <thead>
+
             <tr>
-                <th>Course Name</th>
-                <th>Date</th>
+
+                <th>Quiz ID</th>
+
+                <th>Attempt Date</th>
+
                 <th>Score</th>
+
                 <th>Status</th>
-            </tr>
-            <tr>
-                <td>Introduction to Python</td>
-                <td>2023-10-01</td>
-                <td>85%</td>
-                <td>Completed</td>
-            </tr>
-            <tr>
-                <td>Advanced JavaScript</td>
-                <td>2023-10-15</td>
-                <td>90%</td>
-                <td>Completed</td>
-            </tr>
-        </table>
 
-    </div>
-    <div>
-        <h3 style="text-align: center;">Trainer Feedback: </h3>
-        <table>
-            <tr>
-                <th>Course Name</th>
-                <th>Week</th>
-                <th>Trainer</th>
-                <th>Rating</th>
-                <th>Comments</th>
-                <th>Improvement Areas</th>
             </tr>
-            <tr>
-                <td>Introduction to Python</td>
-                <td>Week 1</td>
-                <td>Rahul Sharma</td>
-                <td>4/5</td>
-                <td>Good understanding of HTML concepts.</td>
-                <td>Practice CSS layouts.</td>
-            </tr>
-            <tr>
-                <td>Advanced JavaScript</td>
-                <td>Week 2</td>
-                <td>Rahul Sharma</td>
-                <td>5/5</td>
-                <td>Excellent quiz performance.</td>
-                <td>Continue learning JavaScript.</td>
-            </tr>
-        </table>
 
-    </div>
-    <br>
-        <h2 style="text-align: left;"><u>Modules</u></h2>
+        </thead>
 
-        <button onclick="window.location.href='employee-onboarding-employee.html'">Employee Onboarding</button>
-        <br>
-        <br>
-        <button onclick="window.location.href='employee-training-module.html'">Training Module</button>
-        <br>
-        <br>
-        <button onclick="window.location.href='assessment&quiz-modules-management.html'">Assessment and Quiz Modules</button>
+        <tbody>
+
+        </tbody>
+
+    </table>
+
     <br>
+
+    <h2>Latest Performance Review</h2>
+
+    <table>
+
+        <tr>
+
+            <th>Rating</th>
+
+            <th>Comments</th>
+
+            <th>Improvement Areas</th>
+
+        </tr>
+
+        <tr>
+
+            <td id="rating">Loading...</td>
+
+            <td id="comments">Loading...</td>
+
+            <td id="improvementAreas">Loading...</td>
+
+        </tr>
+
+    </table>
+
     <br>
+
+    <h2 style="text-align:left;">
+        <u>Modules</u>
+    </h2>
+
+    <button onclick="window.location.href='employee-onboarding-employee.html'">
+
+        Employee Onboarding
+
+    </button>
+
+    <br><br>
+
+    <button onclick="window.location.href='employee-training-module.html'">
+
+        Training Module
+
+    </button>
+
+    <br><br>
+
+    <button onclick="window.location.href='employee-assessment&quiz-modules.html'">
+
+        Assessment & Quiz
+
+    </button>
+
+    <br><br>
+
+    <button onclick="window.location.href='employee-profile.html'">
+
+        My Profile
+
+    </button>
+
+    <br><br>
+
+    <script>
+        async function loadCourseProgress() {
+
+    const response = await fetch(
+        "http://localhost:8080/employee-dashboard/course-progress"
+    );
+
+    const progress = await response.text();
+
+    document.getElementById("courseProgress").innerText = progress + "%";
+
+}
+
+async function loadScoreHistory() {
+
+    const response = await fetch(
+        "http://localhost:8080/employee-dashboard/score-history"
+    );
+
+    const attempts = await response.json();
+
+    const tableBody =
+        document.querySelector("#scoreHistoryTable tbody");
+
+    tableBody.innerHTML = "";
+
+    attempts.forEach(attempt => {
+
+        tableBody.innerHTML += `
+
+        <tr>
+
+            <td>${attempt.quizId}</td>
+
+            <td>${attempt.attemptDate}</td>
+
+            <td>${attempt.score}%</td>
+
+            <td>${attempt.status}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+async function loadFeedback() {
+
+    const response = await fetch(
+        "http://localhost:8080/employee-dashboard/feedback"
+    );
+
+    const review = await response.json();
+
+    if (review != null) {
+
+        document.getElementById("rating").innerText =
+            review.rating + "/5";
+
+        document.getElementById("comments").innerText =
+            review.comments;
+
+        document.getElementById("improvementAreas").innerText =
+            review.improvementAreas;
+
+    }
+
+}
+
+loadCourseProgress();
+
+loadScoreHistory();
+
+loadFeedback();
+
+</script>
+
 </body>
+
 </html>

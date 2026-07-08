@@ -77,6 +77,9 @@
 
     <form id="trainingModuleForm">
 
+        <label for="moduleId">Module ID:</label>
+        <input type="number" id="moduleId" placeholder="Enter Module ID for Update/Delete">
+
         <label for="moduleName">Module Name:</label>
         <input
             type="text"
@@ -120,8 +123,86 @@
             Create Training Module
         </button>
 
+        <button type="button" onclick="updateTrainingModule()">
+            Update Training Module
+        </button>
+        
+        <button type="button" onclick="deleteTrainingModule()">
+            Delete Training Module
+        </button>
+
+        <button type="button" onclick="window.location.href='trainer-dashboard.html'">
+        
+            Back to Dashboard
+        
+        </button>
+
     </form>
+    <hr>
+    
+    <h2>Current Training Modules</h2>
+    
+    <table border="1" id="trainingModuleTable" style="width:100%; border-collapse:collapse; text-align:center;">
+    
+        <thead>
+    
+            <tr>
+    
+                <th>ID</th>
+                <th>Module Name</th>
+                <th>Description</th>
+                <th>Material Link</th>
+                <th>Deadline</th>
+                <th>Assigned Quiz</th>
+    
+            </tr>
+    
+        </thead>
+    
+        <tbody>
+    
+        </tbody>
+    
+    </table>
 <script>
+    async function loadTrainingModules() {
+
+        const response = await fetch(
+            "http://localhost:8080/training-modules"
+        );
+
+        const modules = await response.json();
+
+        const tableBody =
+            document.querySelector("#trainingModuleTable tbody");
+
+        tableBody.innerHTML = "";
+
+        modules.forEach(module => {
+
+            tableBody.innerHTML += `
+
+                <tr>
+
+                    <td>${module.id}</td>
+
+                    <td>${module.moduleName}</td>
+
+                    <td>${module.description}</td>
+
+                    <td>${module.materialLink}</td>
+
+                    <td>${module.deadline}</td>
+
+                    <td>${module.assignedQuiz}</td>
+
+                </tr>
+
+            `;
+
+        });
+
+    }
 
     document.getElementById("trainingModuleForm") //gets the form element by its ID and adds an event listener
         .addEventListener("submit", async function (event) {
@@ -155,6 +236,7 @@
             if (response.ok) {
                 alert("Training Module Added Successfully!");
                 document.getElementById("trainingModuleForm").reset();//resets the form fields to their default values
+                loadTrainingModules(); //reloads the list of training modules to show the newly added module
             }
             else {
                 alert("Failed to Add Training Module.");
@@ -162,7 +244,81 @@
 
         });
 
+        async function updateTrainingModule() {
 
+            const moduleId = document.getElementById("moduleId").value;
+
+            const updatedModule = {
+
+                moduleName: document.getElementById("moduleName").value,
+
+                description: document.getElementById("description").value,
+
+                materialLink: document.getElementById("materialLink").value,
+
+                deadline: document.getElementById("deadline").value,
+
+                assignedQuiz: document.getElementById("quiz").value
+
+        };
+
+        const response = await fetch(
+            "http://localhost:8080/training-modules/" + moduleId,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updatedModule)
+            }
+        );
+
+        if (response.ok) {
+
+            alert("Training Module Updated Successfully!");
+
+            document.getElementById("trainingModuleForm").reset();
+
+            loadTrainingModules();
+
+        }
+        else {
+
+            alert("Update Failed!");
+
+        }
+
+    }
+    
+    async function deleteTrainingModule() {
+
+        const moduleId = document.getElementById("moduleId").value;
+
+        const response = await fetch(
+            "http://localhost:8080/training-modules/" + moduleId,
+            {
+                method: "DELETE"
+            }
+        );
+
+        if (response.ok) {
+
+            alert("Training Module Deleted Successfully!");
+
+            document.getElementById("trainingModuleForm").reset();
+
+            loadTrainingModules();
+
+        }
+        else {
+
+            alert("Delete Failed!");
+
+        }
+
+    }
+
+loadTrainingModules();
 </script>
 </body>
 </html>

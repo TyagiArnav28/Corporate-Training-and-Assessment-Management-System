@@ -38,7 +38,7 @@
 
         .login-container {
             /* Styles for the login container(Login box) */
-            width: 400px;
+            width: 450px;
             /* Sets the width of the login container */
             margin: 0 auto;
             /* Centers the login container horizontally */
@@ -88,19 +88,37 @@
 
 <!-- JS -->
 <script> // JavaScript function to handle login logic
-    function login() { // Function to handle login logic
-        let role = document.getElementById("role").value; // Gets the value of the role select element
-        if (role === "admin") { // If the selected role is admin
-            window.location.href = "admin-dashboard.html"; // Redirect to the admin dashboard
+
+    function login() {
+        // Get the input values and trim any whitespace
+        let email = document.getElementById("email").value.trim();
+        let password = document.getElementById("password").value.trim();
+        let role = document.getElementById("role").value;
+
+        if (email === "") {
+            alert("Please enter your email.");
+            return;
         }
-        else if (role === "trainer") { // If the selected role is trainer
-            window.location.href = "trainer-dashboard.html"; // Redirect to the trainer dashboard
+
+        if (password === "") {
+            alert("Please enter your password.");
+            return;
         }
-        else if (role === "employee") { // If the selected role is employee
-            window.location.href = "employee-dashboard.html"; // Redirect to the employee dashboard
+
+        if (role === "") {
+            alert("Please select a role.");
+            return;
         }
-        else { // If no role is selected
-            alert("Please select a role to login."); // Show an alert message
+
+        // Temporary navigation
+        if (role === "admin") {
+            window.location.href = "admin-dashboard.html";
+        }
+        else if (role === "trainer") {
+            window.location.href = "trainer-dashboard.html";
+        }
+        else {
+            window.location.href = "employee-dashboard.html";
         }
     }
 </script>
@@ -110,7 +128,7 @@
     <h1> <!-- This is a heading <h1> - heading tag -->
         Corporate Training and Assessment Management System
     </h1>
-    <p>Designed for managing corporate training and assessments.</p> <!-- Paragraph tag for description -->
+    <p>Manage employee onboarding, training, assessments and performance reviews.</p> <!-- Paragraph tag for description -->
     <hr style="border: 1px solid #000000;"> <!-- Horizontal rule tag with inline style of adding border -->
 
     <h2 style="text-align: center; margin-left: 28px;"> Login </h2>
@@ -129,7 +147,7 @@
             <div>
                 <label for="role">Role : </label> <!-- Label for the role select -->
                 <select id="role" required> <!-- Dropdown select for user role -->
-                    <option value="Select Role">Select Role</option> <!-- Option for admin role -->
+                    <option value="">Select Role</option> <!-- Option for admin role -->
                     <option value="admin">Admin (HR)</option> <!-- Option for admin role -->
                     <option value="trainer">Trainer</option> <!-- Option for trainer role -->
                     <option value="employee">Employee/Intern</option> <!-- Option for employee/intern role -->

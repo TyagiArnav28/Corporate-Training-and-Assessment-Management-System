@@ -1,11 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assessment and Quiz Modules</title>
+
+    <title>Employee Assessment & Quiz</title>
+
+    <style>
+
+        body{
+            font-family:sans-serif;
+            background-color:rgb(199,190,190);
+            margin:0;
+            padding:20px;
+        }
+
+        h1,p{
+            text-align:center;
+        }
+
+        .quiz-card{
+
+            background-color:lightblue;
+            width:700px;
+            margin:20px auto;
+            padding:20px;
+            border-radius:10px;
+            border:1px solid black;
+
+        }
+
+        label{
+
+            display:block;
+            margin-top:15px;
+            font-weight:bold;
+
+        }
+
+        input{
+
+            width:100%;
+            padding:8px;
+            margin-top:5px;
+            box-sizing:border-box;
+
+        }
+
+        button{
+
+            width:100%;
+            padding:10px;
+            margin-top:15px;
+            border:none;
+            background-color:purple;
+            color:white;
+            cursor:pointer;
+            border-radius:5px;
+
+        }
+
+        button:hover{
+
+            background-color:darkmagenta;
+
+        }
+
+    </style>
+
 </head>
+
 <body>
-    
+
+<h1>Employee Assessment & Quiz</h1>
+
+<p>Attempt quizzes assigned to your training modules.</p>
+
+<hr>
+
+<div id="quizContainer">
+
+</div>
+
+<br>
+
+<button onclick="window.location.href='employee-dashboard.html'">
+
+Back to Dashboard
+
+</button>
+
+<script>
+
+fetch("http://localhost:8080/quizzes")
+
+.then(response=>response.json())
+
+.then(quizzes=>{
+
+    const container=document.getElementById("quizContainer");
+
+    quizzes.forEach(quiz=>{
+
+        container.innerHTML+=`
+
+        <div class="quiz-card">
+
+            <h2>${quiz.quizTitle}</h2>
+
+            <p>
+
+                <strong>Training Module ID:</strong>
+
+                ${quiz.trainingModuleId}
+
+            </p>
+
+            <p>
+
+                <strong>Time Limit:</strong>
+
+                ${quiz.timeLimit} Minutes
+
+            </p>
+
+            <p>
+
+                <strong>Passing Score:</strong>
+
+                ${quiz.passingScore}%
+
+            </p>
+
+            <button
+            onclick="window.open('${quiz.quizLink}','_blank')">
+
+            Open Quiz
+
+            </button>
+
+            <label>
+
+            Enter Your Score
+
+            </label>
+
+            <input
+            type="number"
+            id="score-${quiz.id}"
+            placeholder="Enter Quiz Score">
+
+            <button
+            onclick="submitQuiz(${quiz.id})">
+
+            Submit Quiz
+
+            </button>
+
+            <p id="result-${quiz.id}">
+
+            </p>
+
+        </div>
+
+        `;
+
+    });
+
+});
+
+async function submitQuiz(quizId){
+
+    const score=parseInt(
+
+        document.getElementById(`score-${quizId}`).value
+
+    );
+
+    if(isNaN(score)){
+
+        alert("Please enter your score.");
+
+        return;
+
+    }
+
+    const quizResponse=await fetch(
+
+        "http://localhost:8080/quizzes"
+
+    );
+
+    const quizzes=await quizResponse.json();
+
+    const quiz=quizzes.find(q=>q.id===quizId);
+
+    const passed=score>=quiz.passingScore;
+
+    const quizAttempt={
+
+        employeeId:1,
+
+        quizId:quizId,
+
+        score:score,
+
+        passed:passed,
+
+        attemptDate:new Date().toISOString().split("T")[0],
+
+        feedback:passed?
+
+        "Congratulations! You passed the quiz."
+
+        :
+
+        "Please revise the module and try again.",
+
+        status:passed?
+
+        "Passed"
+
+        :
+
+        "Failed"
+
+    };
+
+    const response=await fetch(
+
+        "http://localhost:8080/quiz-attempts",
+
+        {
+
+            method:"POST",
+
+            headers:{
+
+                "Content-Type":"application/json"
+
+            },
+
+            body:JSON.stringify(quizAttempt)
+
+        }
+
+    );
+
+    if(response.ok){
+
+        document.getElementById(
+
+            `result-${quizId}`
+
+        ).innerHTML=
+
+        `
+        <strong>Result:</strong><br>
+
+        Score : ${score}%<br>
+
+        Status : ${passed?"Passed":"Failed"}<br>
+
+        Feedback :
+        ${passed?
+        "Congratulations! You passed the quiz."
+        :
+        "Please revise the module and try again."
+        }
+
+        `;
+
+    }
+
+    else{
+
+        alert("Failed to submit quiz.");
+
+    }
+
+}
+
+</script>
+
 </body>
+
 </html>

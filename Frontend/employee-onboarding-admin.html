@@ -65,9 +65,10 @@
     <hr style="border: 1px solid #000000;">
     <form id="employeeForm">
         <div>
+            <label for="employeeId">Employee ID:</label>
+            <input type="number" id="employeeId" placeholder="Enter Employee ID">
             <label for="name">Employee Name:</label>
             <input type="text" id="name" placeholder="Enter employee name" required>
-            <br>
             <br>
             <label for="email">Email:</label>
             <input type="email" id="email" placeholder="Enter employee email" required>
@@ -75,10 +76,10 @@
             <label for="department">Department:</label>
             <select id="department" required>
                 <option value="">Select Department</option>
-                <option value="it">IT</option>
-                <option value="hr">HR</option>
-                <option value="finance">Finance</option>
-                <option value="marketing">Marketing</option>
+                <option value="IT">IT</option>
+                <option value="HR">HR</option>
+                <option value="Finance">Finance</option>
+                <option value="Marketing">Marketing</option>
             </select>
 
             <label for="trainer">Assign Trainer:</label>
@@ -104,8 +105,62 @@
             <button type="button" onclick="deleteEmployee()">
                 Delete Employee
             </button>
+            
+            <button type="button" onclick="window.location.href='admin-dashboard.html'">
+                Back to Dashboard
+            </button>
     </form>
+    <hr>
+    
+    <h2>Current Employees</h2>
+    
+    <table border="1" id="employeeTable" style="width:100%; border-collapse:collapse; text-align:center;">
+    
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Trainer</th>
+                <th>Joining Date</th>
+                <th>Training Duration</th>
+            </tr>
+        </thead>
+    
+        <tbody>
+    
+        </tbody>
+    
+    </table>
     <script>
+        async function loadEmployees() {
+
+            const response = await fetch("http://localhost:8080/employees");
+
+            const employees = await response.json();
+
+            const tableBody = document.querySelector("#employeeTable tbody");
+
+            tableBody.innerHTML = "";
+
+            employees.forEach(employee => {
+
+            tableBody.innerHTML += `
+                <tr>
+                    <td>${employee.id}</td>
+                    <td>${employee.name}</td>
+                    <td>${employee.email}</td>
+                    <td>${employee.department}</td>
+                    <td>${employee.trainer}</td>
+                    <td>${employee.joiningDate}</td>
+                    <td>${employee.trainingDuration}</td>
+                </tr>
+            `;
+
+        });
+
+    }
         document.getElementById("employeeForm") //find the form with the id "employeeForm"
             .addEventListener("submit", async function (event) { //add an event listener, when form submitted run the function
 
@@ -143,6 +198,7 @@
                 if (response.ok) {
                     alert("Employee Added Successfully!");
                     document.getElementById("employeeForm").reset();//reset the form after successful submission
+                    loadEmployees(); //reload the employee list to show the newly added employee
                 }
                 else {
                     alert("Failed to add employee.");
@@ -165,8 +221,10 @@
 
             };
 
+            const employeeId = document.getElementById("employeeId").value;
+
             const response = await fetch(
-                "http://localhost:8080/employees/1",
+                "http://localhost:8080/employees/" + employeeId,
                 {
                     method: "PUT",
                     headers: {
@@ -178,6 +236,8 @@
 
             if (response.ok) {
                 alert("Employee Updated Successfully!");
+                document.getElementById("employeeForm").reset();
+                loadEmployees();
             }
             else {
                 alert("Update Failed!");
@@ -186,8 +246,9 @@
 
         async function deleteEmployee() {
 
+            const employeeId = document.getElementById("employeeId").value;
             const response = await fetch(
-                "http://localhost:8080/employees/1",
+                "http://localhost:8080/employees/" + employeeId,
                 {
                     method: "DELETE"
                 }
@@ -195,12 +256,14 @@
 
             if (response.ok) {
                 alert("Employee Deleted Successfully!");
+                document.getElementById("employeeForm").reset();
+                loadEmployees();
             }
             else {
                 alert("Delete Failed!");
             }
         }
-
+        loadEmployees();
     </script>
 </body>
 
