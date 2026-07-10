@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
-import org.springframework.security.core.Authentication;
 
 @RestController
 @CrossOrigin(origins = "*")
