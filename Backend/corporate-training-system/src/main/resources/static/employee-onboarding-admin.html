@@ -150,9 +150,11 @@
 
     </table>
     <script>
+        const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
+
         async function loadEmployees() {
 
-            const response = await fetch("/employees");
+            const response = await fetch(BASE_URL + "/employees");
 
             const employees = await response.json();
 
@@ -199,8 +201,8 @@
 
                 };
 
-                const response = await fetch(//send a request to the backend server to add the employee
-                    "/employees",
+                const response = await fetch(
+                    BASE_URL + "/employees",
                     {
                         method: "POST",//take data and save it to the database
                         headers: {
@@ -255,7 +257,7 @@
             const employeeId = document.getElementById("employeeId").value;
 
             const response = await fetch(
-                "/employees/" + employeeId,
+                BASE_URL + "/employees/" + employeeId,
                 {
                     method: "PUT",
                     headers: {
@@ -279,7 +281,7 @@
 
             const employeeId = document.getElementById("employeeId").value;
             const response = await fetch(
-                "/employees/" + employeeId,
+                BASE_URL + "/employees/" + employeeId,
                 {
                     method: "DELETE"
                 }
@@ -296,7 +298,7 @@
         }
         async function loadTrainers() {
 
-            const response = await fetch("/trainers");
+            const response = await fetch(BASE_URL + "/trainers");
 
             const trainers = await response.json();
 

@@ -199,10 +199,12 @@
 
 <script>
 
+    const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
+
 async function loadReviews(){
 
     const response = await fetch(
-        "http://localhost:8080/performance-reviews"
+        BASE_URL + "/performance-reviews"
     );
 
     const reviews = await response.json();
@@ -259,7 +261,7 @@ document.getElementById("performanceReviewForm")
 
     const response=await fetch(
 
-        "http://localhost:8080/performance-reviews",
+        BASE_URL + "/performance-reviews",
 
         {
 
@@ -316,7 +318,7 @@ async function updateReview(){
 
     const response=await fetch(
 
-        "http://localhost:8080/performance-reviews/"+reviewId,
+        BASE_URL + "/performance-reviews/"+reviewId,
 
         {
 
@@ -358,7 +360,7 @@ async function deleteReview(){
 
     const response=await fetch(
 
-        "http://localhost:8080/performance-reviews/"+reviewId,
+        BASE_URL + "/performance-reviews/"+reviewId,
 
         {
 

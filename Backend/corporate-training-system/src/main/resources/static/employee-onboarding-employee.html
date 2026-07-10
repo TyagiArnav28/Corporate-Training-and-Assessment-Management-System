@@ -124,6 +124,7 @@ Back to Dashboard
 </div>
 
 <script>
+    const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
     const employeeId = 1;
 
 // Load onboarding status when page opens
@@ -131,7 +132,7 @@ async function loadOnboardingStatus() {
 
     try {
 
-        const response = await fetch("http://localhost:8080/employees");
+        const response = await fetch(BASE_URL + "/employees");
 
         const employees = await response.json();
 
@@ -175,7 +176,7 @@ async function loadOnboardingStatus() {
 async function completeOnboarding() {
 
     const response = await fetch(
-        "http://localhost:8080/employees/" + employeeId + "/complete-onboarding",
+        BASE_URL + "/employees/" + employeeId + "/complete-onboarding",
         {
             method: "PUT"
         }

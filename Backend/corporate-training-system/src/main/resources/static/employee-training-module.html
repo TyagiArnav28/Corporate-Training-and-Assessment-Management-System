@@ -81,7 +81,9 @@
     <script>
 
 
-        fetch("http://localhost:8080/training-modules") // Fetches the list of training modules from the backend API
+        const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
+
+        fetch(BASE_URL + "/training-modules") // Fetches the list of training modules from the backend API
             .then(response => response.json()) // converts the response to JSON format
             .then(modules => { // processes the list of modules received from the backend
 
@@ -171,8 +173,8 @@
                 completed: false // Initially sets the completed status to false when submitting the assignment
             };
 
-            const response = await fetch( //Sends a request to the backend API to submit the assignment for the specific training module.
-                "http://localhost:8080/training-progress",
+            const response = await fetch(
+                BASE_URL + "/training-progress",
                 {
                     method: "POST",// Indicates that this is a POST request to create a new resource on the server
                     headers: {
@@ -210,7 +212,7 @@
         async function markComplete(moduleId) { //Function to handle marking a specific training module as completed, identified by moduleId
 
             const response = await fetch(
-                `http://localhost:8080/training-progress/${moduleId}/complete`, // Sends a request to the backend API to mark the specific training module as completed using its ID
+                `${BASE_URL}/training-progress/${moduleId}/complete`, // Sends a request to the backend API to mark the specific training module as completed using its ID
                 {
                     method: "PUT" // Indicates that this is a PUT request to update an existing resource on the server
                 }

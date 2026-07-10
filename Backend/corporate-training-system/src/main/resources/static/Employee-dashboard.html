@@ -202,10 +202,12 @@
     <br><br>
 
     <script>
+        const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
+
         async function loadCourseProgress() {
 
     const response = await fetch(
-        "http://localhost:8080/employee-dashboard/course-progress"
+        BASE_URL + "/employee-dashboard/course-progress"
     );
 
     const progress = await response.text();
@@ -217,7 +219,7 @@
 async function loadScoreHistory() {
 
     const response = await fetch(
-        "http://localhost:8080/employee-dashboard/score-history"
+        BASE_URL + "/employee-dashboard/score-history"
     );
 
     const attempts = await response.json();
@@ -251,7 +253,7 @@ async function loadScoreHistory() {
 
 async function loadFeedback() {
 
-    const response = await fetch("/employee-dashboard/feedback");
+    const response = await fetch(BASE_URL + "/employee-dashboard/feedback");
 
     if (!response.ok) {
 

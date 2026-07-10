@@ -70,22 +70,24 @@
     <br>
     <br>
 <script>
-    fetch("http://localhost:8080/employees/count")
+    const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
+
+    fetch(BASE_URL + "/employees/count")
         .then(response => response.text())
         .then(data => {
             document.getElementById("employeeCount").innerText = data;
         });
-    fetch("http://localhost:8080/trainings/count")
+    fetch(BASE_URL + "/trainings/count")
         .then(response => response.text())
         .then(data => {
             document.getElementById("trainingCount").innerText = data;
         });
-    fetch("http://localhost:8080/completion-rate")
+    fetch(BASE_URL + "/completion-rate")
         .then(response => response.text())
         .then(data => {
             document.getElementById("completionRate").innerText = data + "%";
         });
-    fetch("http://localhost:8080/underperforming/count")
+    fetch(BASE_URL + "/underperforming/count")
         .then(response => response.text())
         .then(data => {
             document.getElementById("underperformingCount").innerText = data;

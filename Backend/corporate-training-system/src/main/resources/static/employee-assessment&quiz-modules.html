@@ -93,7 +93,9 @@ Back to Dashboard
 
 <script>
 
-fetch("http://localhost:8080/quizzes")
+const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
+
+fetch(BASE_URL + "/quizzes")
 
 .then(response=>response.json())
 
@@ -188,7 +190,7 @@ async function submitQuiz(quizId){
 
     const quizResponse=await fetch(
 
-        "http://localhost:8080/quizzes"
+        BASE_URL + "/quizzes"
 
     );
 
@@ -230,7 +232,7 @@ async function submitQuiz(quizId){
 
     const response=await fetch(
 
-        "http://localhost:8080/quiz-attempts",
+        BASE_URL + "/quiz-attempts",
 
         {
 

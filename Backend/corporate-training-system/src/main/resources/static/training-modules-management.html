@@ -164,8 +164,10 @@
 <script>
     async function loadTrainingModules() {
 
+        const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
+
         const response = await fetch(
-            "http://localhost:8080/training-modules"
+            BASE_URL + "/training-modules"
         );
 
         const modules = await response.json();
@@ -220,8 +222,8 @@
                 assignedQuiz: document.getElementById("quiz").value
             };
 
-            const response = await fetch( //Sends a fetch request to backend API to add the new training module to the database.
-                "http://localhost:8080/training-modules",
+            const response = await fetch(
+                BASE_URL + "/training-modules",
                 {
                     method: "POST",//sends data to the server
                     headers: {
@@ -261,7 +263,7 @@
         };
 
         const response = await fetch(
-            "http://localhost:8080/training-modules/" + moduleId,
+            BASE_URL + "/training-modules/" + moduleId,
             {
                 method: "PUT",
                 headers: {
@@ -293,7 +295,7 @@
         const moduleId = document.getElementById("moduleId").value;
 
         const response = await fetch(
-            "http://localhost:8080/training-modules/" + moduleId,
+            BASE_URL + "/training-modules/" + moduleId,
             {
                 method: "DELETE"
             }
@@ -318,7 +320,7 @@
 
     async function loadQuizzes() {
 
-    const response = await fetch("http://localhost:8080/quizzes");
+    const response = await fetch(BASE_URL + "/quizzes");
 
     const quizzes = await response.json();
 

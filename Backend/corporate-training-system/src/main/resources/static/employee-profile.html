@@ -173,13 +173,15 @@
 
 <script>
 
+const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
+
 const employeeId = 1;
 
 // Loads the employee profile when the page opens.
 async function loadProfile(){
 
     const response =
-        await fetch("http://localhost:8080/employees");
+        await fetch(BASE_URL + "/employees");
 
     const employees =
         await response.json();
@@ -227,7 +229,7 @@ async function loadProfile(){
 async function updateProfile(){
 
     const response =
-        await fetch("http://localhost:8080/employees");
+        await fetch(BASE_URL + "/employees");
 
     const employees =
         await response.json();
@@ -264,7 +266,7 @@ async function updateProfile(){
     const updateResponse =
         await fetch(
 
-            "http://localhost:8080/employees/" + employeeId,
+            BASE_URL + "/employees/" + employeeId,
 
             {
 

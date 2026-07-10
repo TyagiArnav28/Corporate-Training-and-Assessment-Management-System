@@ -144,7 +144,9 @@ th {
     <br>
     <script>
 
-fetch("http://localhost:8080/trainer-dashboard/assigned-trainees")
+const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
+
+fetch(BASE_URL + "/trainer-dashboard/assigned-trainees")
 
 .then(response=>response.text())
 
@@ -156,7 +158,7 @@ fetch("http://localhost:8080/trainer-dashboard/assigned-trainees")
 
 });
 
-fetch("http://localhost:8080/trainer-dashboard/pending-reviews")
+fetch(BASE_URL + "/trainer-dashboard/pending-reviews")
 
 .then(response=>response.text())
 
@@ -168,7 +170,7 @@ fetch("http://localhost:8080/trainer-dashboard/pending-reviews")
 
 });
 
-fetch("http://localhost:8080/trainer-dashboard/quiz-performance-summary")
+fetch(BASE_URL + "/trainer-dashboard/quiz-performance-summary")
 
 .then(response=>response.text())
 
@@ -180,7 +182,7 @@ fetch("http://localhost:8080/trainer-dashboard/quiz-performance-summary")
 
 });
 
-fetch("http://localhost:8080/trainer-dashboard/pending-review-employees")
+fetch(BASE_URL + "/trainer-dashboard/pending-review-employees")
 
 .then(response=>response.json())
 
