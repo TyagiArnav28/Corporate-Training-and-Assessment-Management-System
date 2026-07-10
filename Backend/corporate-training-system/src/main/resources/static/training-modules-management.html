@@ -162,9 +162,9 @@
     
     </table>
 <script>
-    async function loadTrainingModules() {
+    const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
 
-        const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
+    async function loadTrainingModules() {
 
         const response = await fetch(
             BASE_URL + "/training-modules"
