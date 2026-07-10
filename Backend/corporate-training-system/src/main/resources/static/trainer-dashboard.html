@@ -152,71 +152,55 @@ if (!trainerEmail) {
 }
 
 fetch(BASE_URL + "/trainer-dashboard/assigned-trainees?trainerEmail=" + encodeURIComponent(trainerEmail))
-
-.then(response=>response.text())
-
-.then(data=>{
-
-    document.getElementById(
-        "assignedTrainees"
-    ).innerText=data;
-
-});
+.then(response => {
+    if (!response.ok) return "0";
+    return response.text();
+})
+.then(data => {
+    document.getElementById("assignedTrainees").innerText = data;
+})
+.catch(() => { document.getElementById("assignedTrainees").innerText = "0"; });
 
 fetch(BASE_URL + "/trainer-dashboard/pending-reviews?trainerEmail=" + encodeURIComponent(trainerEmail))
-
-.then(response=>response.text())
-
-.then(data=>{
-
-    document.getElementById(
-        "pendingReviews"
-    ).innerText=data;
-
-});
+.then(response => {
+    if (!response.ok) return "0";
+    return response.text();
+})
+.then(data => {
+    document.getElementById("pendingReviews").innerText = data;
+})
+.catch(() => { document.getElementById("pendingReviews").innerText = "0"; });
 
 fetch(BASE_URL + "/trainer-dashboard/quiz-performance-summary?trainerEmail=" + encodeURIComponent(trainerEmail))
-
-.then(response=>response.text())
-
-.then(data=>{
-
-    document.getElementById(
-        "quizPerformance"
-    ).innerText=data+"%";
-
-});
+.then(response => {
+    if (!response.ok) return "0";
+    return response.text();
+})
+.then(data => {
+    document.getElementById("quizPerformance").innerText = data + "%";
+})
+.catch(() => { document.getElementById("quizPerformance").innerText = "N/A"; });
 
 fetch(BASE_URL + "/trainer-dashboard/pending-review-employees?trainerEmail=" + encodeURIComponent(trainerEmail))
-
-.then(response=>response.json())
-
-.then(employees=>{
-
-    const tableBody =
-        document.querySelector("#pendingEmployeeTable tbody");
-
-    tableBody.innerHTML="";
-
-    employees.forEach(employee=>{
-
-        tableBody.innerHTML+=`
-
+.then(response => {
+    if (!response.ok) return [];
+    return response.json();
+})
+.then(employees => {
+    if (!Array.isArray(employees)) return;
+    const tableBody = document.querySelector("#pendingEmployeeTable tbody");
+    tableBody.innerHTML = "";
+    employees.forEach(employee => {
+        tableBody.innerHTML += `
         <tr>
-
             <td>${employee.id}</td>
-
             <td>${employee.name}</td>
-
             <td>${employee.department}</td>
-
-        </tr>
-
-        `;
-
+        </tr>`;
     });
+})
+.catch(() => {});
 
-});
 function logout() {
     window.location.href = "index.html";
 }
