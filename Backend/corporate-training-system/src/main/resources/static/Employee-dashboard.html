@@ -204,85 +204,74 @@
     <script>
         const BASE_URL = "https://splendid-hope-production-e0d8.up.railway.app";
 
-        async function loadCourseProgress() {
-
-    const response = await fetch(
-        BASE_URL + "/employee-dashboard/course-progress"
-    );
-
-    const progress = await response.text();
-
-    document.getElementById("courseProgress").innerText = progress + "%";
-
-}
-
-async function loadScoreHistory() {
-
-    const response = await fetch(
-        BASE_URL + "/employee-dashboard/score-history"
-    );
-
-    const attempts = await response.json();
-
-    const tableBody =
-        document.querySelector("#scoreHistoryTable tbody");
-
-    tableBody.innerHTML = "";
-
-    attempts.forEach(attempt => {
-
-        tableBody.innerHTML += `
-
-        <tr>
-
-            <td>${attempt.quizId}</td>
-
-            <td>${attempt.attemptDate}</td>
-
-            <td>${attempt.score}%</td>
-
-            <td>${attempt.status}</td>
-
-        </tr>
-
-        `;
-
-    });
-
-}
-
-async function loadFeedback() {
-
-    const response = await fetch(BASE_URL + "/employee-dashboard/feedback");
-
-    if (!response.ok) {
-
-        document.getElementById("rating").innerText = "-";
-        document.getElementById("comments").innerText = "No review yet";
-        document.getElementById("improvementAreas").innerText = "No review yet";
-        return;
+    const employeeEmail = localStorage.getItem("userEmail");
+    if (!employeeEmail) {
+        window.location.href = "index.html";
     }
 
-    const review = await response.json();
-
-    if (review == null) {
-
-        document.getElementById("rating").innerText = "-";
-        document.getElementById("comments").innerText = "No review yet";
-        document.getElementById("improvementAreas").innerText = "No review yet";
-
-    } else {
-
-        document.getElementById("rating").innerText =
-            review.rating + "/5";
-
-        document.getElementById("comments").innerText =
-            review.comments;
-
-        document.getElementById("improvementAreas").innerText =
-            review.improvementAreas;
+    async function loadCourseProgress() {
+        try {
+            const response = await fetch(
+                BASE_URL + "/employee-dashboard/course-progress?employeeEmail=" + encodeURIComponent(employeeEmail)
+            );
+            if (!response.ok) {
+                document.getElementById("courseProgress").innerText = "0%";
+                return;
+            }
+            const progress = await response.text();
+            document.getElementById("courseProgress").innerText = progress + "%";
+        } catch (e) {
+            document.getElementById("courseProgress").innerText = "0%";
+        }
     }
-}
+
+    async function loadScoreHistory() {
+        try {
+            const response = await fetch(
+                BASE_URL + "/employee-dashboard/score-history?employeeEmail=" + encodeURIComponent(employeeEmail)
+            );
+            if (!response.ok) return;
+            const attempts = await response.json();
+            const tableBody = document.querySelector("#scoreHistoryTable tbody");
+            tableBody.innerHTML = "";
+            attempts.forEach(attempt => {
+                tableBody.innerHTML += `
+                <tr>
+                    <td>${attempt.quizId}</td>
+                    <td>${attempt.attemptDate}</td>
+                    <td>${attempt.score}%</td>
+                    <td>${attempt.status}</td>
+                </tr>
+                `;
+            });
+        } catch (e) { }
+    }
+
+    async function loadFeedback() {
+        try {
+            const response = await fetch(BASE_URL + "/employee-dashboard/feedback?employeeEmail=" + encodeURIComponent(employeeEmail));
+            if (!response.ok) {
+                document.getElementById("rating").innerText = "-";
+                document.getElementById("comments").innerText = "No review yet";
+                document.getElementById("improvementAreas").innerText = "No review yet";
+                return;
+            }
+            const review = await response.json();
+            if (review == null) {
+                document.getElementById("rating").innerText = "-";
+                document.getElementById("comments").innerText = "No review yet";
+                document.getElementById("improvementAreas").innerText = "No review yet";
+            } else {
+                document.getElementById("rating").innerText = review.rating + "/5";
+                document.getElementById("comments").innerText = review.comments;
+                document.getElementById("improvementAreas").innerText = review.improvementAreas;
+            }
+        } catch (e) {
+            document.getElementById("rating").innerText = "-";
+            document.getElementById("comments").innerText = "No review yet";
+            document.getElementById("improvementAreas").innerText = "No review yet";
+        }
+    }
 
 loadCourseProgress();
 

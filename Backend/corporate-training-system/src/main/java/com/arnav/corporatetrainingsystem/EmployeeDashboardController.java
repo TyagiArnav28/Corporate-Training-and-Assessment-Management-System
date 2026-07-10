@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -29,11 +29,9 @@ public class EmployeeDashboardController {
     }
 
     @GetMapping("/employee-dashboard/course-progress")
-    public int getCourseProgress(Authentication authentication) {
-        String email = authentication.getName(); // Get the email of the logged-in employee from the authentication
-                                                 // object
+    public int getCourseProgress(@RequestParam String employeeEmail) {
         Employee employee = employeeRepository
-                .findByEmail(email)
+                .findByEmail(employeeEmail)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         long employeeId = employee.getId(); // Get the ID of the logged-in employee
         // Get the total number of training modules and the number of completed modules
@@ -66,11 +64,9 @@ public class EmployeeDashboardController {
 
     @GetMapping("/employee-dashboard/feedback") // Endpoint to get the latest performance review for the logged-in
                                                 // employee
-    public PerformanceReview getFeedback(Authentication authentication) {
-        String email = authentication.getName(); // Get the email of the logged-in employee from the authentication
-                                                 // object
+    public PerformanceReview getFeedback(@RequestParam String employeeEmail) {
         Employee employee = employeeRepository
-        .findByEmail(email)
+        .findByEmail(employeeEmail)
         .orElseThrow(() -> new RuntimeException("Employee not found"));
         // Get the latest performance review for the logged-in employee by querying the
         // PerformanceReviewRepository for all reviews,
@@ -92,11 +88,9 @@ public class EmployeeDashboardController {
      // the Trainer Dashboard
 
     @GetMapping("/employee-dashboard/score-history")
-    public List<QuizAttempt> getScoreHistory(Authentication authentication) {
-        String email = authentication.getName(); // Get the email of the logged-in employee from the authentication
-                                                 // object
+    public List<QuizAttempt> getScoreHistory(@RequestParam String employeeEmail) {
         Employee employee = employeeRepository
-        .findByEmail(email)
+        .findByEmail(employeeEmail)
         .orElseThrow(() -> new RuntimeException("Employee not found"));
         // Find the employee in the database using their
         return quizAttemptRepository.findByEmployeeId(employee.getId());// Query the QuizAttemptRepository for all quiz
