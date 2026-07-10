@@ -17,6 +17,11 @@ public class QuizController {
     // Create Quiz
     @PostMapping("/quizzes")
     public Quiz addQuiz(@RequestBody Quiz quiz) {
+
+        if (quizRepository.existsById(quiz.getId())) {
+            throw new RuntimeException("Quiz ID already exists.");
+        }
+
         return quizRepository.save(quiz);
     }
 
@@ -28,7 +33,7 @@ public class QuizController {
 
     // Update Quiz
     @PutMapping("/quizzes/{id}")
-    public Quiz updateQuiz(@PathVariable Long id,@RequestBody Quiz updatedQuiz) {
+    public Quiz updateQuiz(@PathVariable Long id, @RequestBody Quiz updatedQuiz) {
 
         Optional<Quiz> quiz = quizRepository.findById(id);
 

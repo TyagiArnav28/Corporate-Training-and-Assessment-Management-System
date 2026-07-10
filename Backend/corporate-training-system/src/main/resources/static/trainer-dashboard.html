@@ -136,6 +136,10 @@ th {
         <h2 style="text-align: left;"><u>Weekly Performance Review</u></h2>
         <p>Click below to give weekly performance reviews: </p>
         <button onclick="window.location.href='weekly-performance-review.html'">Give Weekly Performance Reviews</button>
+        <button onclick="logout()"
+            style="position:absolute; top:20px; right:20px; padding:10px 18px; background-color:#d9534f; color:white; border:none; border-radius:5px; cursor:pointer;">
+            Logout
+        </button>
     <br>
     <br>
     <script>
@@ -206,6 +210,9 @@ fetch("http://localhost:8080/trainer-dashboard/pending-review-employees")
     });
 
 });
+function logout() {
+    window.location.href = "index.html";
+}
 
 </script>
 </body>

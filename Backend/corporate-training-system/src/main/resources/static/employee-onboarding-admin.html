@@ -57,16 +57,41 @@
     button:hover {
         background-color: darkmagenta;
     }
+
+    .instructions {
+        width: 80%;
+        margin: 20px auto;
+        padding: 15px;
+
+        background: #fff9db;
+
+        border: 1px solid #d4b106;
+
+        border-radius: 6px;
+
+        text-align: left;
+    }
 </style>
 
 <body>
     <h1>Employee Onboarding</h1>
     <p>Add a new employee to the system.</p>
     <hr style="border: 1px solid #000000;">
+    <div class="instructions">
+        <h3>Instructions</h3>
+
+        <p>
+            <b>Add Employee:</b> Fill out the form to add a new employee to the system. You can find ID in the employee table below.
+        </p>
+        <p>
+            <b>Update/Delete Employee:</b> Enter the Employee ID of the employee you want to modify. You can find the
+            ID in the employee table below.
+        </p>
+    </div>
     <form id="employeeForm">
         <div>
             <label for="employeeId">Employee ID:</label>
-            <input type="number" id="employeeId" placeholder="Enter Employee ID">
+            <input type="number" id="employeeId" placeholder="Enter employee ID">
             <label for="name">Employee Name:</label>
             <input type="text" id="name" placeholder="Enter employee name" required>
             <br>
@@ -74,20 +99,11 @@
             <input type="email" id="email" placeholder="Enter employee email" required>
 
             <label for="department">Department:</label>
-            <select id="department" required>
-                <option value="">Select Department</option>
-                <option value="IT">IT</option>
-                <option value="HR">HR</option>
-                <option value="Finance">Finance</option>
-                <option value="Marketing">Marketing</option>
-            </select>
+            <input type="text" id="department" placeholder="Enter Department" required>
 
             <label for="trainer">Assign Trainer:</label>
             <select id="trainer">
                 <option value="">Select Trainer</option>
-                <option value="Rahul Sharma">Rahul Sharma</option>
-                <option value="Amit Kumar">Amit Kumar</option>
-                <option value="Priya Singh">Priya Singh</option>
             </select>
 
             <label for="joining-date">Joining Date:</label>
@@ -105,17 +121,17 @@
             <button type="button" onclick="deleteEmployee()">
                 Delete Employee
             </button>
-            
+
             <button type="button" onclick="window.location.href='admin-dashboard.html'">
                 Back to Dashboard
             </button>
     </form>
     <hr>
-    
+
     <h2>Current Employees</h2>
-    
+
     <table border="1" id="employeeTable" style="width:100%; border-collapse:collapse; text-align:center;">
-    
+
         <thead>
             <tr>
                 <th>ID</th>
@@ -127,16 +143,16 @@
                 <th>Training Duration</th>
             </tr>
         </thead>
-    
+
         <tbody>
-    
+
         </tbody>
-    
+
     </table>
     <script>
         async function loadEmployees() {
 
-            const response = await fetch("http://localhost:8080/employees");
+            const response = await fetch("/employees");
 
             const employees = await response.json();
 
@@ -146,7 +162,7 @@
 
             employees.forEach(employee => {
 
-            tableBody.innerHTML += `
+                tableBody.innerHTML += `
                 <tr>
                     <td>${employee.id}</td>
                     <td>${employee.name}</td>
@@ -158,17 +174,18 @@
                 </tr>
             `;
 
-        });
-
-    }
+            });
+        }
         document.getElementById("employeeForm") //find the form with the id "employeeForm"
             .addEventListener("submit", async function (event) { //add an event listener, when form submitted run the function
 
                 event.preventDefault(); //prevent the default form submission behavior
 
-                const employee = { //create an object with all the employee details
+                const employee = {
 
-                    name: document.getElementById("name").value,//get the value of the input field with id "name"
+                    id: parseInt(document.getElementById("employeeId").value),
+
+                    name: document.getElementById("name").value,
 
                     email: document.getElementById("email").value,
 
@@ -178,14 +195,12 @@
 
                     joiningDate: document.getElementById("joining-date").value,
 
-                    trainingDuration: parseInt( //convert text input to integer
-                        document.getElementById("duration").value
-                    )
+                    trainingDuration: parseInt(document.getElementById("duration").value)
 
                 };
 
                 const response = await fetch(//send a request to the backend server to add the employee
-                    "http://localhost:8080/employees",
+                    "/employees",
                     {
                         method: "POST",//take data and save it to the database
                         headers: {
@@ -196,12 +211,28 @@
                 );
 
                 if (response.ok) {
-                    alert("Employee Added Successfully!");
-                    document.getElementById("employeeForm").reset();//reset the form after successful submission
-                    loadEmployees(); //reload the employee list to show the newly added employee
+
+                    alert(
+                        `Employee Added Successfully!
+
+                        Login Credentials
+
+                        Email: ${employee.email}
+                        Password: employee123
+                        Please share these credentials with the employee.`
+                    );
+
+                    document.getElementById("employeeForm").reset();
+
+                    await loadEmployees();
+
                 }
                 else {
-                    alert("Failed to add employee.");
+
+                    const error = await response.json();
+
+                    alert(error.detail);
+
                 }
 
             });
@@ -224,7 +255,7 @@
             const employeeId = document.getElementById("employeeId").value;
 
             const response = await fetch(
-                "http://localhost:8080/employees/" + employeeId,
+                "/employees/" + employeeId,
                 {
                     method: "PUT",
                     headers: {
@@ -237,7 +268,7 @@
             if (response.ok) {
                 alert("Employee Updated Successfully!");
                 document.getElementById("employeeForm").reset();
-                loadEmployees();
+                await loadEmployees();
             }
             else {
                 alert("Update Failed!");
@@ -248,7 +279,7 @@
 
             const employeeId = document.getElementById("employeeId").value;
             const response = await fetch(
-                "http://localhost:8080/employees/" + employeeId,
+                "/employees/" + employeeId,
                 {
                     method: "DELETE"
                 }
@@ -257,12 +288,34 @@
             if (response.ok) {
                 alert("Employee Deleted Successfully!");
                 document.getElementById("employeeForm").reset();
-                loadEmployees();
+                await loadEmployees();
             }
             else {
                 alert("Delete Failed!");
             }
         }
+        async function loadTrainers() {
+
+            const response = await fetch("/trainers");
+
+            const trainers = await response.json();
+
+            const trainerDropdown = document.getElementById("trainer");
+
+            trainerDropdown.innerHTML =
+                '<option value="">Select Trainer</option>';
+
+            trainers.forEach(trainer => {
+
+                trainerDropdown.innerHTML +=
+                    `<option value="${trainer.email}">
+                ${trainer.name}
+            </option>`;
+
+            });
+
+        }
+        loadTrainers();
         loadEmployees();
     </script>
 </body>

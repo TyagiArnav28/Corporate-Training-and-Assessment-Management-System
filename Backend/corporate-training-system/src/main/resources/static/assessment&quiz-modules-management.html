@@ -152,77 +152,77 @@
     </table>
 
     <hr>
-    
+
     <h2>Submitted Quiz Attempts</h2>
-    
+
     <table id="quizAttemptTable">
-    
+
         <thead>
-    
+
             <tr>
-    
+
                 <th>Attempt ID</th>
                 <th>Employee ID</th>
                 <th>Quiz ID</th>
                 <th>Score</th>
                 <th>Status</th>
                 <th>Feedback</th>
-    
+
             </tr>
-    
+
         </thead>
-    <tbody>
-    
-    </tbody>
-    
+        <tbody>
+
+        </tbody>
+
     </table>
-    
+
     <hr>
-    
+
     <h2>Evaluate Quiz Attempt</h2>
-    
+
     <form id="evaluationForm">
-    
+
         <label for="attemptId">
             Attempt ID
         </label>
-    
+
         <input type="number" id="attemptId" required>
-    
+
         <label for="attemptScore">
             Score
         </label>
-    
+
         <input type="number" id="attemptScore" required>
-    
+
         <label for="attemptFeedback">
             Feedback
         </label>
-    
+
         <input type="text" id="attemptFeedback" required>
-    
+
         <label for="attemptPassed">
             Result
         </label>
-    
+
         <select id="attemptPassed">
-    
+
             <option value="true">
                 Passed
             </option>
-    
+
             <option value="false">
                 Failed
             </option>
-    
+
         </select>
-    
+
         <button type="button" onclick="evaluateAttempt()">
-    
+
             Evaluate Attempt
-    
+
         </button>
-    
+
     </form>
 
     <script>
@@ -261,6 +261,7 @@
 
                 const quiz = {
 
+                    id: parseInt(document.getElementById("quizId").value),
                     quizTitle: document.getElementById("quizTitle").value,
 
                     trainingModuleId: parseInt(document.getElementById("trainingModuleId").value),
@@ -377,81 +378,82 @@
 
         async function evaluateAttempt() {
 
-    const attemptId =
-        document.getElementById("attemptId").value;
+            const attemptId =
+                document.getElementById("attemptId").value;
 
-    const response =
-        await fetch("http://localhost:8080/quiz-attempts");
+            const response =
+                await fetch("http://localhost:8080/quiz-attempts");
 
-    const attempts = await response.json();
+            const attempts = await response.json();
 
-    const attempt =
-        attempts.find(a => a.id == attemptId);
+            const attempt =
+                attempts.find(a => a.id == attemptId);
 
-    if (!attempt) {
+            if (!attempt) {
 
-        alert("Attempt not found.");
+                alert("Attempt not found.");
 
-        return;
+                return;
 
-    }
+            }
 
-    const updatedAttempt = {
+            const updatedAttempt = {
+                id: parseInt(document.getElementById("attemptId").value),
 
-        employeeId: attempt.employeeId,
+                employeeId: attempt.employeeId,
 
-        quizId: attempt.quizId,
+                quizId: attempt.quizId,
 
-        score: parseInt(
-            document.getElementById("attemptScore").value
-        ),
+                score: parseInt(
+                    document.getElementById("attemptScore").value
+                ),
 
-        passed:
-            document.getElementById("attemptPassed").value === "true",
+                passed:
+                    document.getElementById("attemptPassed").value === "true",
 
-        attemptDate: attempt.attemptDate,
+                attemptDate: attempt.attemptDate,
 
-        feedback:
-            document.getElementById("attemptFeedback").value
+                feedback:
+                    document.getElementById("attemptFeedback").value
 
-    };
+            };
 
-    const updateResponse = await fetch(
+            const updateResponse = await fetch(
 
-        "http://localhost:8080/quiz-attempts/" + attemptId,
+                "http://localhost:8080/quiz-attempts/" + attemptId,
 
-        {
+                {
 
-            method: "PUT",
+                    method: "PUT",
 
-            headers: {
+                    headers: {
 
-                "Content-Type": "application/json"
+                        "Content-Type": "application/json"
 
-            },
+                    },
 
-            body: JSON.stringify(updatedAttempt)
+                    body: JSON.stringify(updatedAttempt)
+
+                }
+
+            );
+
+            if (updateResponse.ok) {
+
+                alert("Quiz Evaluated Successfully!");
+
+                document.getElementById("evaluationForm").reset();
+
+                loadQuizAttempts();
+
+            }
+            else {
+
+                alert("Evaluation Failed!");
+
+            }
 
         }
-
-    );
-
-    if (updateResponse.ok) {
-
-        alert("Quiz Evaluated Successfully!");
-
-        document.getElementById("evaluationForm").reset();
-
-        loadQuizAttempts();
-
-    }
-    else {
-
-        alert("Evaluation Failed!");
-
-    }
-
-}
 
         loadQuizzes();
         loadQuizAttempts();
@@ -491,10 +493,9 @@
 
             `;
 
-        });
+            });
 
-    }
-
+        }
     </script>
 
 </body>

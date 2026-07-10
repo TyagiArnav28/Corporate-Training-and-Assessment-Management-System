@@ -16,6 +16,9 @@ public class PerformanceReviewController {
 
     @PostMapping("/performance-reviews") // Handles HTTP POST requests to create a new performance review
     public PerformanceReview addPerformanceReview(@RequestBody PerformanceReview performanceReview) {// Maps the request body to a PerformanceReview object
+        if (performanceReviewRepository.existsById(performanceReview.getId())) {// Checks if a performance review with the same ID already exists in the database
+            throw new RuntimeException("ID already exists.");// Throws a runtime exception if the ID already exists, preventing duplicate entries
+        }
         return performanceReviewRepository.save(performanceReview);//Saves the performance review to the database
     }
 

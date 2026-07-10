@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class TrainingProgress {
 
     @Id // Specifies the primary key of the entity
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Specifies that the primary key will be generated automatically by the database
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Specifies that the primary key will be generated automatically by the database   
     private Long id;
 
     private Long employeeId;

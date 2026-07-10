@@ -83,44 +83,95 @@
         button:hover {
             background-color: darkblue;
         }
+
+        .credentials-container {
+    width: 450px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.credentials-container h3 {
+    margin-top: 0;
+    color: #003366;
+}
+
+.credentials-container p {
+    margin: 5px 0;
+}
     </style>
 </head>
 
 <!-- JS -->
 <script> // JavaScript function to handle login logic
+async function login() {
 
-    function login() {
-        // Get the input values and trim any whitespace
-        let email = document.getElementById("email").value.trim();
-        let password = document.getElementById("password").value.trim();
-        let role = document.getElementById("role").value;
+    let email = document.getElementById("email").value.trim();
 
-        if (email === "") {
-            alert("Please enter your email.");
-            return;
-        }
+    let password = document.getElementById("password").value.trim();
 
-        if (password === "") {
-            alert("Please enter your password.");
-            return;
-        }
+    if (email === "") {
 
-        if (role === "") {
-            alert("Please select a role.");
-            return;
-        }
+        alert("Please enter your email.");
 
-        // Temporary navigation
-        if (role === "admin") {
-            window.location.href = "admin-dashboard.html";
-        }
-        else if (role === "trainer") {
-            window.location.href = "trainer-dashboard.html";
-        }
-        else {
-            window.location.href = "employee-dashboard.html";
-        }
+        return;
     }
+
+    if (password === "") {
+
+        alert("Please enter your password.");
+
+        return;
+    }
+
+    const response = await fetch(
+        "/login",
+        {
+            method: "POST",
+
+            credentials: "include",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        }
+    );
+
+    if (!response.ok) {
+
+        alert("Invalid Email or Password");
+
+        return;
+    }
+
+    const data = await response.json();
+
+    if (data.role === "ADMIN") {
+
+        window.location.href = "admin-dashboard.html";
+
+    }
+    else if (data.role === "TRAINER") {
+
+        window.location.href = "trainer-dashboard.html";
+
+    }
+    else {
+
+        window.location.href = "employee-dashboard.html";
+
+    }
+
+}
 </script>
 
 
@@ -144,18 +195,38 @@
                 <input id="password" type="password" placeholder="Enter your password" required>
                 <!-- Password input field -->
             </div>
-            <div>
-                <label for="role">Role : </label> <!-- Label for the role select -->
-                <select id="role" required> <!-- Dropdown select for user role -->
-                    <option value="">Select Role</option> <!-- Option for admin role -->
-                    <option value="admin">Admin (HR)</option> <!-- Option for admin role -->
-                    <option value="trainer">Trainer</option> <!-- Option for trainer role -->
-                    <option value="employee">Employee/Intern</option> <!-- Option for employee/intern role -->
-                </select>
-            </div>
             <button type="button" onclick="login()">Login</button> <!-- Submit button for the form -->
         </form>
-    </div>
+        </div>
+        
+        <hr style="margin-top: 30px;">
+        
+        <div class="credentials-container">
+            <h3>System Login Credentials</h3>
+        
+            <p><strong>ADMIN</strong></p>
+            <p>Email: admin@cts.com</p>
+            <p>Password: admin123</p>
+        
+            <br>
+        
+            <p><strong>TRAINER</strong></p>
+            <p>Email: rahul@cts.com</p>
+            <p>Password: trainer123</p>
+        
+            <br>
+        
+            <p><strong>EMPLOYEE</strong></p>
+            <p>Email: Generated automatically when Admin creates an Employee</p>
+            <p>Password: employee123 (Temporary Password)</p>
+        
+            <br>
+        
+            <p style="font-size:14px; color:#555;">
+                <strong>Note:</strong> Every newly onboarded employee automatically receives a temporary login account with the
+                default password <strong>employee123</strong>.
+            </p>
+        </div>
 
 </body>
 

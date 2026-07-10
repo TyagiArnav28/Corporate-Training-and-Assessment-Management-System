@@ -8,7 +8,6 @@ import java.time.LocalDate;
 public class TrainingModule {
 
     @Id //Specifies the primary key of an entity.
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //let db generate the id automatically
     private Long id;
 
     private String moduleName;

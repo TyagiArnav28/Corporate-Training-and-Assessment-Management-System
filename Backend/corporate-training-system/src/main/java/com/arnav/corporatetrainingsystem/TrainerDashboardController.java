@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
+import org.springframework.security.core.Authentication;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -20,17 +21,14 @@ public class TrainerDashboardController {
     }
 
     @GetMapping("/trainer-dashboard/assigned-trainees")
-    public long getAssignedTrainees(){
-        // TODO:
-        // Replace the hardcoded trainer name with the logged-in trainer
-        // after implementing login authentication.
-        String trainer = "Rahul Sharma"; // Replace with the logged-in trainer's name
-        return employeeRepository.countByTrainer(trainer);
+    public long getAssignedTrainees(Authentication authentication) {
+        String trainerEmail = authentication.getName(); // Replace with the logged-in trainer's name
+        return employeeRepository.countByTrainer(trainerEmail);
     }
 
     @GetMapping("/trainer-dashboard/pending-reviews") // Endpoint to get the number of pending performance reviews for the logged-in trainer
-    public int getPendingReviews() {
-        String trainer = "Rahul Sharma"; // Replace with the logged-in trainer's name LATER
+    public int getPendingReviews(Authentication authentication) { // Returns the number of pending performance reviews for the logged-in trainer by comparing the list of employees assigned to the trainer with the list of performance reviews submitted today.
+        String trainer = authentication.getName(); // Replace with the logged-in trainer's name LATER
         List<Employee> assignedEmployees = employeeRepository.findByTrainer(trainer); 
         // Get the list of employees assigned to the logged-in trainer by querying the EmployeeRepository for employees with the trainer's name
         int totalEmployees = assignedEmployees.size(); 
@@ -53,9 +51,9 @@ public class TrainerDashboardController {
     }
 
     @GetMapping("/trainer-dashboard/pending-review-employees")// Endpoint to get the list of employees who have not submitted their performance reviews for the day
-    public List<Employee> getPendingReviewEmployees() {// Returns a list of employees who have not submitted their performance reviews for the day by comparing the list of employees assigned to the logged-in trainer with the list of performance reviews submitted today.
+    public List<Employee> getPendingReviewEmployees(Authentication authentication) {// Returns a list of employees who have not submitted their performance reviews for the day by comparing the list of employees assigned to the logged-in trainer with the list of performance reviews submitted today.
 
-        String trainer = "Rahul Sharma";// Replace with the logged-in trainer's name LATER
+        String trainer = authentication.getName(); // Replace with the logged-in trainer's name LATER
 
         List<Employee> assignedEmployees = employeeRepository.findByTrainer(trainer);
         // Get the list of employees assigned to the logged-in trainer by querying the EmployeeRepository for employees with the trainer's name
@@ -79,9 +77,14 @@ public class TrainerDashboardController {
     }
 
     @GetMapping("/trainer-dashboard/quiz-performance-summary")
-    public int getQuizPerformanceSummary() {
+    public int getQuizPerformanceSummary(Authentication authentication) {
+        String trainer = authentication.getName(); // Replace with the logged-in trainer's name LATER
+        List<Employee> assignedEmployees = employeeRepository.findByTrainer(trainer); // Get the list of employees assigned to the logged-in trainer by querying the EmployeeRepository for employees with the trainer's name
+        List<Long> employeeIds = assignedEmployees.stream()
+                .map(employee -> employee.getId())
+                .toList(); // Get the list of employee IDs assigned to the logged-in trainer by mapping the list of assigned employees to their IDs
 
-        List<QuizAttempt> attempts = quizAttemptRepository.findAll();// Get all quiz attempts from the database by querying the QuizAttemptRepository for all quiz attempts
+        List<QuizAttempt> attempts = quizAttemptRepository.findByEmployeeIdIn(employeeIds);// Get all quiz attempts from the database by querying the QuizAttemptRepository for all quiz attempts
 
         if (attempts.isEmpty()) {// Check if there are no quiz attempts in the database
             return 0;

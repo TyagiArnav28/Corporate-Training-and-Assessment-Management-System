@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface PerformanceReviewRepository extends JpaRepository<PerformanceReview, Long> {
     List<PerformanceReview> findByReviewDate(LocalDate reviewDate);
+    List<PerformanceReview> findByEmployeeId(Long employeeId);
     //returns all reviews submitted on a particular date.
 }
 /* This interface extends JpaRepository, which performes all the database operations for the TrainingModule entity. 

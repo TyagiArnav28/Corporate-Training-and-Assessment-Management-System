@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 public interface QuizAttemptRepository extends JpaRepository<QuizAttempt, Long> {
     List<QuizAttempt> findByEmployeeId(Long employeeId);
+    List<QuizAttempt> findByEmployeeIdIn(List<Long> employeeIds);
 }
 /* This interface extends JpaRepository, which performes all the database operations for the TrainingModule entity. 
 The JpaRepository provides methods for saving, finding, updating, and deleting entities. 

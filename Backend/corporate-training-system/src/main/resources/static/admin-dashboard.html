@@ -66,6 +66,7 @@
         <h2 style="text-align: left;"><u>Employee Onboarding</u></h2>
         <p>Click below to add a new employee: </p>
         <button onclick="window.location.href='employee-onboarding-admin.html'">Add Employee</button>
+        <button onclick="logout()"style="position:absolute; top:20px; right:20px;">Logout</button>
     <br>
     <br>
 <script>
@@ -89,6 +90,12 @@
         .then(data => {
             document.getElementById("underperformingCount").innerText = data;
         });
+
+        function logout() {
+
+        window.location.href = "index.html";
+
+    }
 </script>
 </body>
 </html>

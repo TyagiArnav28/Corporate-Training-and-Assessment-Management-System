@@ -150,11 +150,11 @@
 
         <tr>
 
-            <td id="rating">Loading...</td>
+            <td id="rating">-</td>
 
-            <td id="comments">Loading...</td>
+            <td id="comments">-</td>
 
-            <td id="improvementAreas">Loading...</td>
+            <td id="improvementAreas">-</td>
 
         </tr>
 
@@ -195,6 +195,9 @@
         My Profile
 
     </button>
+
+    <button onclick="logout()"style="position:absolute; top:20px; right:20px;">Logout</button>
+
 
     <br><br>
 
@@ -248,13 +251,25 @@ async function loadScoreHistory() {
 
 async function loadFeedback() {
 
-    const response = await fetch(
-        "http://localhost:8080/employee-dashboard/feedback"
-    );
+    const response = await fetch("/employee-dashboard/feedback");
+
+    if (!response.ok) {
+
+        document.getElementById("rating").innerText = "-";
+        document.getElementById("comments").innerText = "No review yet";
+        document.getElementById("improvementAreas").innerText = "No review yet";
+        return;
+    }
 
     const review = await response.json();
 
-    if (review != null) {
+    if (review == null) {
+
+        document.getElementById("rating").innerText = "-";
+        document.getElementById("comments").innerText = "No review yet";
+        document.getElementById("improvementAreas").innerText = "No review yet";
+
+    } else {
 
         document.getElementById("rating").innerText =
             review.rating + "/5";
@@ -264,9 +279,7 @@ async function loadFeedback() {
 
         document.getElementById("improvementAreas").innerText =
             review.improvementAreas;
-
     }
-
 }
 
 loadCourseProgress();
@@ -274,6 +287,12 @@ loadCourseProgress();
 loadScoreHistory();
 
 loadFeedback();
+
+function logout() {
+
+        window.location.href = "index.html";
+
+    }
 
 </script>
 

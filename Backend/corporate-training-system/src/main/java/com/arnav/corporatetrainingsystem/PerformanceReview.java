@@ -8,7 +8,6 @@ import java.time.LocalDate;
 public class PerformanceReview {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private long employeeId;

@@ -71,11 +71,11 @@
 
     </div>
     <br>
-    
+
     <button onclick="window.location.href='employee-dashboard.html'">
-    
+
         Back to Dashboard
-    
+
     </button>
 
     <script>
@@ -90,8 +90,8 @@
 
                 modules.forEach(module => { //for every module in the list, creates a card with module details
 
-                container.innerHTML += // Adds the module details to the container's inner HTML
-                `
+                    container.innerHTML += // Adds the module details to the container's inner HTML
+                        `
     
                 <div class="module-card"> 
     
@@ -155,14 +155,13 @@
                     `assignment-${moduleId}` //Gets the value of the assignment link input field for the specific module using its ID
                 ).value;
 
-            if (assignmentLink.trim() === "" || !(assignmentLink.startsWith("http://")||assignmentLink.startsWith("https://"))) { // If the assignment link is empty or invalid, shows an alert and exits the function without submitting.
+            if (assignmentLink.trim() === "" || !(assignmentLink.startsWith("http://") || assignmentLink.startsWith("https://"))) { // If the assignment link is empty or invalid, shows an alert and exits the function without submitting.
 
                 alert("Please enter a valid GitHub or Google Drive link.");
                 return;
             }
 
             const trainingProgress = { //Creates an object that cointains the details of the training progress
-
                 employeeId: 1,
 
                 trainingModuleId: moduleId, // Associates the progress with the specific training module using its ID
@@ -188,15 +187,15 @@
                 alert("Assignment Submitted Successfully!");
                 document.getElementById(
                     `submit-${moduleId}`
-                )   .disabled = true;
+                ).disabled = true;
 
                 document.getElementById(
                     `submit-${moduleId}`
-                )   .innerText = "Assignment Submitted";
+                ).innerText = "Assignment Submitted";
 
                 document.getElementById(
                     `assignment-${moduleId}`
-                )    .disabled = true;
+                ).disabled = true;
 
                 document.getElementById(
                     `complete-${moduleId}` // Enables the "Mark Complete" button for the specific module after successful assignment submission
@@ -223,7 +222,7 @@
 
                 document.getElementById(
                     `status-${moduleId}` // Updates the status text for the specific module to "Completed" after successfully marking it as completed
-                ).innerText = "Status: Completed"; 
+                ).innerText = "Status: Completed";
 
                 document.getElementById(
                     `complete-${moduleId}` // Disables the "Mark Complete" button for the specific module after successfully marking it as completed
@@ -231,7 +230,7 @@
 
                 document.getElementById(
                     `complete-${moduleId}`// Disables the "Mark Complete" button for the specific module after successfully marking it as completed
-                ).disabled = true; 
+                ).disabled = true;
             }
             else {
 

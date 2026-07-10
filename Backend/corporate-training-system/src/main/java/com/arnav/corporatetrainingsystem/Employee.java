@@ -7,8 +7,7 @@ import java.time.LocalDate;
 @Table(name = "employees") // Connect this class to the employees table.
 public class Employee {
 
-    @Id // Primary key of an entity
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Let MySQL generate the ID automatically.
+    @Id // Primary key of an entity.
     private Long id;
 
     private String name;

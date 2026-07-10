@@ -114,9 +114,6 @@
         <label for="quiz">Assign Quiz:</label>
         <select id="quiz">
             <option value="">Select Quiz</option>
-            <option value="Java Basics Quiz">Java Basics Quiz</option>
-            <option value="Spring Boot Quiz">Spring Boot Quiz</option>
-            <option value="DBMS Quiz">DBMS Quiz</option>
         </select>
 
         <button type="submit">
@@ -211,6 +208,7 @@
 
             const trainingModule = { //Creates JS object trainingModule that gets the values from the form fields.
 
+                id: parseInt(document.getElementById("moduleId").value),
                 moduleName: document.getElementById("moduleName").value,//Gets the value of the module name input field.
 
                 description: document.getElementById("description").value,
@@ -318,6 +316,27 @@
 
     }
 
+    async function loadQuizzes() {
+
+    const response = await fetch("http://localhost:8080/quizzes");
+
+    const quizzes = await response.json();
+
+    const quizDropdown = document.getElementById("quiz");
+
+    quizDropdown.innerHTML = '<option value="">Select Quiz</option>';
+
+    quizzes.forEach(quiz => {
+
+        quizDropdown.innerHTML +=
+            `<option value="${quiz.quizTitle}">
+                ${quiz.quizTitle}
+            </option>`;
+
+    });
+
+}
+loadQuizzes();
 loadTrainingModules();
 </script>
 </body>
