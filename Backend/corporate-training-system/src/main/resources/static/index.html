@@ -155,6 +155,9 @@ async function login() {
 
     const data = await response.json();
 
+    localStorage.setItem("userEmail", data.email);
+    localStorage.setItem("userRole", data.role);
+
     if (data.role === "ADMIN") {
 
         window.location.href = "admin-dashboard.html";
@@ -167,7 +170,7 @@ async function login() {
     }
     else {
 
-        window.location.href = "employee-dashboard.html";
+        window.location.href = "Employee-dashboard.html";
 
     }
 
