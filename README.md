@@ -65,11 +65,11 @@ Frontend:
 * CSS
 * JavaScript
 
-Planned Backend:
+Backend:
 
 * Java
 * Spring Boot
 
-Planned Database:
+Database:
 
 * MySQL
